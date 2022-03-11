@@ -16,7 +16,7 @@ import { CatchType } from "typings";
  */
 export const postProject = async (
   req: NextApiRequest,
-  res: NextApiResponse<Array<IProject> | CatchType>
+  res: NextApiResponse<IProject[] | CatchType>
 ) => {
   const errors: Result<ValidationError> = await validationResult(req);
   if (!errors.isEmpty()) {
@@ -24,7 +24,7 @@ export const postProject = async (
     return res.status(422).json({ msg: firstError });
   } else {
     try {
-      const newProject: Array<IProject> = await new Projects(req.body).save();
+      const newProject: IProject[] = await new Projects(req.body).save();
       return res.status(200).json(newProject);
     } catch (error) {
       return res.status(500).json({
@@ -42,7 +42,7 @@ export const postProject = async (
  */
 export const getProjectListByAdmin = async (
   req: NextApiRequest,
-  res: NextApiResponse<Array<IProject> | CatchType>
+  res: NextApiResponse<IProject[] | CatchType>
 ) => {
   const errors: Result<ValidationError> = await validationResult(req);
 
@@ -63,7 +63,7 @@ export const getProjectListByAdmin = async (
 
       await Projects.find({ admin })
         .sort({ createdAt: -1 })
-        .exec(async (err: Object, inquery: Array<IProject>) => {
+        .exec(async (err: Object, inquery: IProject[]) => {
           if (err) {
             return res.status(400).json({ msg: JSON.stringify(err) });
           }
@@ -106,7 +106,7 @@ export const getApiListByProject = async (
           }
 
           await Apis.find({ projectId: _id }).exec(
-            (err: Object, api: Array<IApi>) => {
+            (err: Object, api: IApi[]) => {
               if (err || !api) {
                 return res.status(404).json({
                   msg: "Can not found api list",

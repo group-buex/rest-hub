@@ -11,7 +11,7 @@ import {
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<Array<IProject> | CatchType>
+  res: NextApiResponse<IProject[] | CatchType>
 ) => {
   if (req.method === "GET" && req.query.id.length === 1) {
     return await getProjectListByAdmin(req, res);

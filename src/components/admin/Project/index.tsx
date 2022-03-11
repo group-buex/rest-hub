@@ -1,22 +1,17 @@
 import React, { FC } from "react";
-import { useRecoilValueLoadable } from "recoil";
 import List from "./List";
-import { getProjectSelector } from "states/project";
 import { IProject } from "interface/project";
+import { getProjectSelector } from "states/project";
+import useGetRecoilState from "hooks/useGetRecoilState";
 
 interface ProjectListProps {
   admin: string;
 }
 
-type RecoilValue = {
-  contents: Array<IProject>;
-  state: "hasValue" | "loading" | "hasError";
-};
-
 const ProjectList: FC<ProjectListProps> = ({ admin }) => {
-  const { contents, state } = useRecoilValueLoadable(
+  const { contents, state } = useGetRecoilState<IProject[]>(
     getProjectSelector(admin)
-  ) as RecoilValue;
+  );
 
   return (
     <div className="flex flex-col md:w-6/12 w-10/12 items-center pt-24 pb-24 m-auto">

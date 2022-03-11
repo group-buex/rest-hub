@@ -2,18 +2,16 @@ import axios from "axios";
 import { IProject } from "interface/project";
 import { selectorFamily } from "recoil";
 
-type GetParameter = string;
-
-export const getProjectSelector = selectorFamily<Array<IProject>, GetParameter>(
-  {
-    key: "getProjectSelector",
-    get: (param: GetParameter) => async () => {
+export const getProjectSelector = selectorFamily<IProject[], string>({
+  key: "getProjectSelector",
+  get:
+    (param: string) =>
+    async ({ get }) => {
       try {
         const { data } = await axios.get(`/api/v1/project/${param}`);
-        return data as Array<IProject>;
+        return data;
       } catch (error) {
         throw error;
       }
     },
-  }
-);
+});

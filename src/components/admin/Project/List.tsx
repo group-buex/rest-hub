@@ -4,7 +4,7 @@ import { IProject } from "interface/project";
 import { format } from "date-fns";
 
 interface ListProps {
-  list: Array<IProject>;
+  list: IProject[];
 }
 
 const Index: FC<ListProps> = ({ list }) => {
