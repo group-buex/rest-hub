@@ -8,11 +8,11 @@ const ProjectSchema: Schema<IProject> = new Schema(
   {
     seq: { type: Number, required: true },
     name: { type: String, required: true, maxlength: 128 },
-    title: { type: String, required: true, maxlength: 128 },
-    description: { type: String, required: true, maxlength: 128 },
-    baseUrl: { type: String, required: true, maxlength: 128 },
-    adminName: { type: String, required: true, maxlength: 128 },
-    webUrl: { type: String, required: true, maxlength: 128 },
+    title: { type: String, required: true, maxlength: 256 },
+    description: { type: String, required: true, maxlength: 512 },
+    baseUrl: { type: String, required: true, maxlength: 256 },
+    admin: { type: String, required: true, maxlength: 128 },
+    webUrl: { type: String, required: true, maxlength: 256 },
   },
   {
     timestamps: true,

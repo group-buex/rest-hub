@@ -6,6 +6,6 @@ export default interface IProject extends Document {
   title: string;
   description: string;
   baseUrl: string;
-  adminName: string;
+  admin: string;
   webUrl: string;
 }
