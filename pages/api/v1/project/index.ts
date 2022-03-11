@@ -8,7 +8,7 @@ import { postProject } from "../../../../server/controller/project";
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<IProject[] | CatchType>
+  res: NextApiResponse<Array<IProject> | CatchType>
 ) => {
   if (req.method === "POST") return await postProject(req, res);
 };

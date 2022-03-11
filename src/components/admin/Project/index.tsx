@@ -8,13 +8,18 @@ interface ProjectListProps {
   admin: string;
 }
 
+type RecoilValue = {
+  contents: Array<IProject>;
+  state: "hasValue" | "loading" | "hasError";
+};
+
 const ProjectList: FC<ProjectListProps> = ({ admin }) => {
-  const { contents: projectList, state } = useRecoilValueLoadable<IProject[]>(
+  const { contents, state } = useRecoilValueLoadable(
     getProjectSelector(admin)
-  );
+  ) as RecoilValue;
 
   return (
-    <div className="flex flex-col md:w-6/12 w-10/12 items-center pt-32 pb-24 m-auto">
+    <div className="flex flex-col md:w-6/12 w-10/12 items-center pt-24 pb-24 m-auto">
       <div className="flex flex-row w-full justify-between mb-12">
         <h1 className="text-5xl font-bold text-blue-500">Rest Hub</h1>
       </div>
@@ -31,7 +36,7 @@ const ProjectList: FC<ProjectListProps> = ({ admin }) => {
       {state !== "hasValue" ? (
         <span>Loading...</span>
       ) : (
-        projectList && <List list={projectList} />
+        contents && <List list={contents} />
       )}
     </div>
   );

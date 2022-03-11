@@ -14,7 +14,7 @@ import { CatchType } from "typings";
  */
 export const postApi = async (
   req: NextApiRequest,
-  res: NextApiResponse<IApi[] | CatchType>
+  res: NextApiResponse<Array<IApi> | CatchType>
 ) => {
   const errors: Result<ValidationError> = await validationResult(req);
   if (!errors.isEmpty()) {
@@ -22,7 +22,7 @@ export const postApi = async (
     return res.status(422).json({ msg: firstError });
   } else {
     try {
-      const newApis: IApi[] = await new Apis(req.body).save();
+      const newApis: Array<IApi> = await new Apis(req.body).save();
       return res.status(200).json(newApis);
     } catch (error) {
       return res.status(500).json({

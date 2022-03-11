@@ -8,7 +8,7 @@ import { postApi } from "../../../../server/controller/api";
 
 const handler = async (
   req: NextApiRequest,
-  res: NextApiResponse<IApi[] | CatchType>
+  res: NextApiResponse<Array<IApi> | CatchType>
 ) => {
   if (req.method === "POST") return await postApi(req, res);
 };
