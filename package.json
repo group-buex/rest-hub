@@ -1,5 +1,6 @@
 {
   "name": "rest-hub",
+  "author": "group-buex",
   "version": "0.1.0",
   "private": true,
   "scripts": {
