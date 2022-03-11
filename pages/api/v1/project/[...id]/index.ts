@@ -6,7 +6,7 @@ import IProject from "../../../../../server/interface/project";
 import { CatchType } from "typings";
 import {
   getProjectListByAdmin,
-  getApiListByProject,
+  getApiListByProjectId,
 } from "../../../../../server/controller/project";
 
 const handler = async (
@@ -17,7 +17,7 @@ const handler = async (
     return await getProjectListByAdmin(req, res);
   }
   if (req.method === "GET" && req.query.id.length === 2) {
-    return await getApiListByProject(req, res);
+    return await getApiListByProjectId(req, res);
   }
 };
 

@@ -83,7 +83,7 @@ export const getProjectListByAdmin = async (
  * @METHOD `GET`
  * @PATH `/api/v1/project/:admin/:id`
  */
-export const getApiListByProject = async (
+export const getApiListByProjectId = async (
   req: NextApiRequest,
   res: NextApiResponse<any | CatchType>
 ) => {

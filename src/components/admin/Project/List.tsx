@@ -5,9 +5,10 @@ import { format } from "date-fns";
 
 interface ListProps {
   list: IProject[];
+  onClickItem: (id: string) => void;
 }
 
-const Index: FC<ListProps> = ({ list }) => {
+const Index: FC<ListProps> = ({ list, onClickItem }) => {
   return (
     <>
       {list.length > 0 &&
@@ -25,6 +26,7 @@ const Index: FC<ListProps> = ({ list }) => {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 20, opacity: 0 }}
               transition={{ duration: initDelay() }}
+              onClick={() => onClickItem(item._id)}
             >
               <div className="flex flex-row justify-between">
                 <h2 className="text-2xl font-semibold leading-6 text-gray-800">
