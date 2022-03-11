@@ -15,6 +15,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "autoprefixer": "^10.4.2",
     "axios": "^0.26.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
@@ -24,11 +25,13 @@
     "mongoose": "^6.2.1",
     "mongoose-auto-increment": "^5.0.1",
     "next": "12.1.10",
+    "postcss": "^8.4.8",
     "prettier": "^2.5.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-icons": "^4.3.1",
     "recoil": "^0.6.1",
+    "tailwindcss": "^3.0.23",
     "zlib": "^1.0.5"
   },
   "devDependencies": {
@@ -41,6 +44,7 @@
     "eslint": "7.32.0",
     "eslint-config-next": "12.0.10",
     "nodemon": "^2.0.15",
+    "postcss-preset-env": "^7.4.2",
     "typescript": "4.5.5"
   }
 }
