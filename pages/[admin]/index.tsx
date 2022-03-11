@@ -1,13 +1,13 @@
 import type { NextPage } from "next";
 import { GetServerSideProps } from "next";
-import ProjectList from "components/admin/ProjectList";
+import Project from "components/admin/Project";
 
 interface AdminProps {
   param: string;
 }
 
 const Index: NextPage<AdminProps> = ({ param }) => {
-  return <ProjectList admin={param} />;
+  return <Project admin={param} />;
 };
 
 export const getServerSideProps: GetServerSideProps<{ param: string }> = async (
