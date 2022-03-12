@@ -1,6 +1,11 @@
 import axios from "axios";
 import { IProjectApi, IProject } from "interface/project";
-import { selectorFamily } from "recoil";
+import { atom, selectorFamily } from "recoil";
+
+export const selectedApiState = atom({
+  key: "project/selectedApiState",
+  default: [],
+});
 
 export const getProjectListSelector = selectorFamily<IProject[], string>({
   key: "project/getProjectListSelector",
@@ -22,7 +27,7 @@ type GetApiListByProjectIdSelectorProps = {
 };
 
 export const getApiListByProjectIdSelector = selectorFamily<
-  IProjectApi[],
+  IProjectApi,
   GetApiListByProjectIdSelectorProps
 >({
   key: "project/getApiListByProjectIdSelector",
