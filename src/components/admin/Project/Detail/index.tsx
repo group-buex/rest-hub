@@ -3,7 +3,7 @@ import { IProjectApi } from "interface/project";
 import React, { FC, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { getApiListByProjectIdSelector, projectApiState } from "states/project";
-import DetailList from "./DetailList";
+import DetailList from "./List";
 
 interface DetailProps {
   admin: string;

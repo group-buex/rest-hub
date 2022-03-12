@@ -9,14 +9,14 @@ interface ListProps {
 }
 
 const Index: FC<ListProps> = ({ list, onClickItem }) => {
+  const initDelay = useCallback((index: number) => {
+    return index < 5 ? 0.3 * index || 0.15 : 1.5;
+  }, []);
+
   return (
     <>
       {list.length > 0 &&
         list.map((item: IProject, index: number) => {
-          const initDelay = useCallback(() => {
-            return index < 5 ? 0.3 * index || 0.15 : 1.5;
-          }, []);
-
           return (
             <motion.div
               key={item._id}
@@ -25,7 +25,7 @@ const Index: FC<ListProps> = ({ list, onClickItem }) => {
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 20, opacity: 0 }}
-              transition={{ duration: initDelay() }}
+              transition={{ duration: initDelay(index) }}
               onClick={() => onClickItem(item._id)}
             >
               <div className="flex flex-row justify-between">

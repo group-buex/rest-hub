@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { useRouter } from "next/router";
 
-import ProjectList from "./ProjectList";
+import ProjectList from "./List";
 import { IProject } from "interface/project";
 import { getProjectListSelector } from "states/project";
 import useGetRecoilState from "hooks/useGetRecoilState";
