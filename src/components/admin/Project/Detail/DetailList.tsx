@@ -1,18 +1,15 @@
 import React, { FC } from "react";
 import { IProject, IProjectApi } from "interface/project";
 import { IApi } from "interface/api";
-import Api from "./Api";
-import { selectedApiState } from "states/project";
+import Api from "./Api/ApiList";
 import { useRecoilState } from "recoil";
 
-interface ListProps {
+interface DetailListProps {
   project: IProject;
   api: IApi[];
 }
 
-const List: FC<ListProps> = ({ project, api }) => {
-  const [currentApi, setCurrentApi] = useRecoilState(selectedApiState);
-
+const DetailList: FC<DetailListProps> = ({ project, api }) => {
   const handleClickTitleItem = (id) => {
     // if (currentApi.length > 0 && currentApi.filter((api) => api.id === id)) {
     //   console.log(currentApi.filter((api) => api.id !== id));
@@ -31,9 +28,9 @@ const List: FC<ListProps> = ({ project, api }) => {
         </p>
       </div>
 
-      <Api list={api} onClickTitleItem={handleClickTitleItem} />
+      <Api onClickTitleItem={handleClickTitleItem} />
     </>
   );
 };
 
-export default List;
+export default DetailList;

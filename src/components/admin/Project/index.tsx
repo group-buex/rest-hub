@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { useRouter } from "next/router";
 
-import List from "./List";
+import ProjectList from "./ProjectList";
 import { IProject } from "interface/project";
 import { getProjectListSelector } from "states/project";
 import useGetRecoilState from "hooks/useGetRecoilState";
@@ -10,7 +10,7 @@ interface ProjectListProps {
   admin: string;
 }
 
-const ProjectList: FC<ProjectListProps> = ({ admin }) => {
+const Index: FC<ProjectListProps> = ({ admin }) => {
   const router = useRouter();
   const { contents, state } = useGetRecoilState<IProject[]>(
     getProjectListSelector(admin)
@@ -29,10 +29,12 @@ const ProjectList: FC<ProjectListProps> = ({ admin }) => {
       {state !== "hasValue" ? (
         <span>Loading...</span>
       ) : (
-        contents && <List list={contents} onClickItem={handleClickItem} />
+        contents && (
+          <ProjectList list={contents} onClickItem={handleClickItem} />
+        )
       )}
     </>
   );
 };
 
-export default ProjectList;
+export default Index;

@@ -1,8 +1,9 @@
 import useGetRecoilState from "hooks/useGetRecoilState";
 import { IProjectApi } from "interface/project";
-import React, { FC } from "react";
-import { getApiListByProjectIdSelector } from "states/project";
-import List from "./List";
+import React, { FC, useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { getApiListByProjectIdSelector, projectApiState } from "states/project";
+import DetailList from "./DetailList";
 
 interface DetailProps {
   admin: string;
@@ -10,16 +11,22 @@ interface DetailProps {
 }
 
 const Index: FC<DetailProps> = ({ admin, id }) => {
+  const [projectApiList, setProjectApiList] = useRecoilState(projectApiState);
+
   const { contents, state } = useGetRecoilState<IProjectApi>(
     getApiListByProjectIdSelector({ admin, id })
   );
+
+  useEffect(() => {
+    state === "hasValue" && setProjectApiList(contents);
+  }, [state]);
 
   return (
     <div className="">
       {state !== "hasValue" ? (
         <span>Loading...</span>
       ) : (
-        contents && <List {...contents} />
+        projectApiList && <DetailList {...projectApiList} />
       )}
     </div>
   );
