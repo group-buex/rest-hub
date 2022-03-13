@@ -12,9 +12,12 @@ export default interface IApi extends Document {
     method: string;
     url: string;
     description: string;
+    notice: string;
+    mockData: object;
     request: {
       seq: number;
       order: number;
+      isRequired: boolean;
       name: string;
       type: string;
       description: string;
@@ -26,7 +29,6 @@ export default interface IApi extends Document {
       message: string;
       data: object;
     }[];
-    mock: object;
   }[];
   models: {
     seq: number;

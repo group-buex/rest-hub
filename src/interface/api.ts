@@ -18,17 +18,24 @@ export interface IApiList {
   method: string;
   url: string;
   description: string;
-  request: {
-    seq: number;
-    name: string;
-    type: string;
-    description: string;
-  }[];
-  response: {
-    seq: number;
-    code: number;
-    message: string;
-    data: object;
-  }[];
-  mock: object;
+  notice: string;
+  mockData: object;
+  request: IApiRequest[];
+  response: IApiResponse[];
+}
+
+export interface IApiRequest {
+  _id: string;
+  seq: number;
+  name: string;
+  type: string;
+  description: string;
+}
+
+export interface IApiResponse {
+  _id: string;
+  seq: number;
+  code: number;
+  message: string;
+  data: object;
 }

@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { IApi, IApiList } from "interface/api";
 import React, { FC, useCallback } from "react";
 import { useRecoilState } from "recoil";
-import { projectApiState, selectedApiGroupState } from "states/project";
+import { selectedApiGroupState } from "states/project";
+import GroupListItem from "../GroupListItem";
 
 import IconArrowDown from "/assets/keyboard_arrow_down.svg";
 
@@ -11,16 +12,15 @@ interface GourpItemListProps {
   item: IApi;
 }
 
-const METHOD_COLOR = {
+const METHOD_COLOR_BG = {
   GET: "bg-green-300",
   POST: "bg-blue-300",
-  PUT: "bg-orange-300",
+  PUT: "bg-yellow-300",
   PATCH: "bg-orange-300",
   DELETE: "bg-red-300",
 };
 
 const GourpItemList: FC<GourpItemListProps> = ({ item }) => {
-  const [projectApiList, setProjectApiList] = useRecoilState(projectApiState);
   const [{ groupList, apiList }, setSelectedApiGroup] = useRecoilState(
     selectedApiGroupState
   );
@@ -45,6 +45,7 @@ const GourpItemList: FC<GourpItemListProps> = ({ item }) => {
     });
   };
 
+  console.log(item);
   return (
     <ol className="mb-8">
       {item.list.map((api: IApiList, index: number) => (
@@ -61,10 +62,9 @@ const GourpItemList: FC<GourpItemListProps> = ({ item }) => {
           >
             <span className="flex flex-row gap-5 ">
               <p
-                className={clsx(
-                  "flex justify-center w-24 leading-6 text-xl pt-1 pb-1 rounded-md",
-                  METHOD_COLOR[api.method.toUpperCase()]
-                )}
+                className={`flex justify-center w-24 leading-6 text-xl pt-1 pb-1 rounded-md ${
+                  METHOD_COLOR_BG[api.method.toUpperCase()]
+                }`}
               >
                 {api.method}
               </p>
@@ -88,6 +88,7 @@ const GourpItemList: FC<GourpItemListProps> = ({ item }) => {
               </span>
             </span>
           </motion.li>
+          {apiList.includes(api._id) && <GroupListItem item={api} />}
         </React.Fragment>
       ))}
     </ol>

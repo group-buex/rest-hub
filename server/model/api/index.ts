@@ -18,10 +18,13 @@ const ApiSchema: Schema<IApi> = new Schema(
         method: { type: String, required: true, maxlength: 10 },
         url: { type: String, required: true, maxlength: 256 },
         description: { type: String, required: true, maxlength: 512 },
+        notice: { type: String, maxlength: 512 },
+        mockData: { type: Object, default: null },
         request: [
           {
             seq: { type: Number, required: true },
             order: { type: Number, required: true },
+            isRequired: { type: Boolean, required: true, default: false },
             name: { type: String, required: true, maxlength: 128 },
             type: { type: String, required: true, maxlength: 128 },
             description: { type: String, required: true, maxlength: 512 },

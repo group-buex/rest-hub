@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from "react";
 import { motion } from "framer-motion";
 
-import GroupItemList from "../GroupItemList";
+import GroupList from "../GroupList";
 
 import { IApi } from "interface/api";
 import IconArrowDown from "/assets/keyboard_arrow_down.svg";
@@ -73,7 +73,7 @@ const ApiGroupItem: FC<ApiGroupItemProps> = ({ api, onClickGroup }) => {
               nodeSelector="li"
               handleSelector="a"
             >
-              <GroupItemList item={item} />
+              <GroupList item={item} />
             </ReactDragListView>
           )}
         </React.Fragment>

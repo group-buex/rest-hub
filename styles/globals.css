@@ -18,3 +18,18 @@ a {
 * {
   box-sizing: border-box;
 }
+
+pre.__json-pretty__ {
+  background-color: #2f2f2f;
+  border-radius: 8px;
+  padding: 14px 20px;
+  color: #fff;
+}
+
+pre.__json-pretty__ > span.__json-key__ {
+  color: #ffaf9c;
+}
+
+pre.__json-pretty__ > span.__json-string__ {
+  color: #4dcfff;
+}
