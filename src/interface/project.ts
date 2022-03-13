@@ -47,7 +47,7 @@ export interface IProjectApi {
         data: object;
       }[];
       mock: object;
-    };
+    }[];
     models: {
       seq: number;
       name: string;

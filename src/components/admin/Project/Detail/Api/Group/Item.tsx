@@ -17,7 +17,7 @@ interface ApiGroupItemProps {
 }
 
 const ApiGroupItem: FC<ApiGroupItemProps> = ({ api, onClickGroup }) => {
-  const [selectedApiGroup, setSelectedApiGroup] = useRecoilState(
+  const [{ groupList, apiList }, setSelectedApiGroup] = useRecoilState(
     selectedApiGroupState
   );
 
@@ -47,33 +47,35 @@ const ApiGroupItem: FC<ApiGroupItemProps> = ({ api, onClickGroup }) => {
             transition={{ duration: initDelay(index) }}
             onClick={() => onClickGroup(item)}
           >
-            <div className="flex flex-row gap-5">
-              <a href="#">
+            <span className="flex flex-row gap-5">
+              <a href="#" aria-label="Sort">
                 <IconSort />
               </a>
               <p className="leading-6 text-xl">{item.title}</p>
               <p className="text-base leading-6 text-gray-500">
                 {item.description}
               </p>
-            </div>
-            <div
+            </span>
+            <span
               className={clsx(
                 "flex flex-row transition-transform",
-                selectedApiGroup?.groupList.includes(item._id) && " rotate-180"
+                groupList?.includes(item._id) && " rotate-180"
               )}
             >
-              <button>
+              <button aria-label="search">
                 <IconArrowDown />
               </button>
-            </div>
+            </span>
           </motion.li>
-          <ReactDragListView
-            // onDragEnd={handleDragEnd}
-            nodeSelector="li"
-            handleSelector="a"
-          >
-            <GroupItemList item={item} />
-          </ReactDragListView>
+          {groupList.includes(item._id) && (
+            <ReactDragListView
+              // onDragEnd={handleDragEnd}
+              nodeSelector="li"
+              handleSelector="a"
+            >
+              <GroupItemList item={item} />
+            </ReactDragListView>
+          )}
         </React.Fragment>
       ))}
     </ol>
