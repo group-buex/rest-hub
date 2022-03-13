@@ -3,6 +3,7 @@ import { RecoilRoot } from "recoil";
 import Layout from "components/Core/Layout";
 import "../styles/globals.css";
 import Header from "components/Core/Header";
+import { Toaster } from "react-hot-toast";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -13,6 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </div>
       </Layout>
+      <Toaster position="top-center" reverseOrder={false} />
     </RecoilRoot>
   );
 }

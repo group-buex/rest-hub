@@ -7,7 +7,9 @@ const Header: FC = () => {
       <div className="flex justify-between md:w-9/12 w-11/12">
         <div className="">
           <Link href="/">
-            <a className="text-4xl font-bold text-blue-500">Rest Hub</a>
+            <a className="text-4xl font-bold text-blue-500">
+              Rest Hub <span className="text-sm"># BETA</span>
+            </a>
           </Link>
         </div>
       </div>
