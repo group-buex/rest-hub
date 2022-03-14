@@ -18,15 +18,16 @@ export function useApiHandler(apiCall, useToast: boolean) {
       setReqState({ error: null, data: null, loading: true, status: null });
       try {
         const json = await apiCall(...data);
-        await setReqState({
-          error: null,
-          data: json?.data ?? null,
-          loading: false,
-          status: json?.status,
-        });
 
         if (useToast && toastId) {
-          const timeId = setTimeout(() => {
+          const timeId = setTimeout(async () => {
+            await setReqState({
+              error: null,
+              data: json?.data ?? null,
+              loading: false,
+              status: json?.status,
+            });
+
             toast.dismiss(toastId);
             resolve({
               error: null,
@@ -39,6 +40,13 @@ export function useApiHandler(apiCall, useToast: boolean) {
           return () => clearTimeout(timeId);
         }
 
+        await setReqState({
+          error: null,
+          data: json?.data ?? null,
+          loading: false,
+          status: json?.status,
+        });
+
         resolve({
           error: null,
           data: json?.data ?? null,
@@ -48,12 +56,36 @@ export function useApiHandler(apiCall, useToast: boolean) {
       } catch (e) {
         const message =
           (e.response && e.response.data) || "Ooops, something went wrong...";
+
+        if (useToast && toastId) {
+          const timeId = setTimeout(async () => {
+            await setReqState({
+              error: message,
+              data: null,
+              loading: false,
+              status: e.state,
+            });
+
+            toast.dismiss(toastId);
+            toast.error(message.msg);
+            reject({
+              error: message,
+              data: null,
+              loading: false,
+              status: e.state,
+            });
+          }, 300);
+
+          return () => clearTimeout(timeId);
+        }
+
         await setReqState({
           error: message,
           data: null,
           loading: false,
           status: e.state,
         });
+
         reject({ error: message, data: null, loading: false, status: e.state });
       }
     });

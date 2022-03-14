@@ -150,7 +150,7 @@ export const login = async (
 
         // check password
         if (!match) {
-          return res.json({
+          return res.status(400).json({
             msg: "Please check you password.",
           });
         }
