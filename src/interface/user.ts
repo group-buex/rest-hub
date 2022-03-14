@@ -5,10 +5,10 @@ export default interface IUser {
   seq: number;
   name: string;
   email: string;
-  hash_password: string;
-  salt: string;
   type: string;
+  accessToken: string;
+  refreshToken: string;
+  project?: IProject[];
   createdAt: Date;
   updatedAt: Date;
-  project?: IProject[];
 }
