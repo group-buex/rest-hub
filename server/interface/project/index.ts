@@ -8,4 +8,11 @@ export default interface IProject extends Document {
   baseUrl: string;
   admin: string;
   webUrl: string;
+  member?: IMember[];
+}
+
+interface IMember {
+  seq: number;
+  userId: string;
+  role: string;
 }

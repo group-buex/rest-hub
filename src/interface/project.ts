@@ -7,8 +7,15 @@ export interface IProject {
   baseUrl: string;
   admin: string;
   webUrl: string;
+  member?: IMember[];
   createdAt: Date;
   updatedAt: Date;
+}
+
+interface IMember {
+  seq: number;
+  userId: string;
+  role: string;
 }
 
 export interface IProjectApi {
