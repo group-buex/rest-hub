@@ -1,6 +1,7 @@
 import Head from "next/head";
 import React, { FC } from "react";
 import { ReactNode } from "typings";
+import Header from "./Header";
 
 interface LayoutProps {
   children: ReactNode;
@@ -8,7 +9,7 @@ interface LayoutProps {
 
 const Layout: FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="flex flex-col md:w-9/12 w-10/12 items-center pt-3 pb-24 m-auto">
+    <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Rest Hub" />
@@ -21,8 +22,13 @@ const Layout: FC<LayoutProps> = ({ children }) => {
         <meta property="og:image" content="/card.png" />
         <title>Rest Hub</title>
       </Head>
-      {children}
-    </div>
+      <Header />
+      <div className="flex flex-col fade w-full mt-16 pt-6">
+        <div className="flex flex-col md:w-9/12 w-10/12 items-center pt-3 pb-24 m-auto">
+          {children}
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -1,27 +1,34 @@
 import type { AppProps } from "next/app";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useRecoilValueLoadable } from "recoil";
 import { Toaster } from "react-hot-toast";
-import Layout from "components/Core/Layout";
-import Header from "components/Core/Header";
-import AuthProvider from "components/Provider/AuthProvider";
 import "../styles/globals.css";
+import useGetRecoilValueLoadable from "hooks/useGetRecoilValueLoadable";
+import IUser from "interface/user";
+import { checkAuthSelector, userState } from "states/user";
+
+const Provider = (props) => {
+  // const { contents, state, stateData } = useGetRecoilValueLoadable<IUser>(
+  //   checkAuthSelector(props.user_session),
+  //   userState
+  // );
+  const { contents, state } = useRecoilValueLoadable(checkAuthSelector(null));
+
+  if (state === "loading") return <div>Loading....</div>;
+
+  return <>{props.children}</>;
+};
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
-      <AuthProvider>
-        <Layout>
-          <Header />
-          <div className="flex flex-col fade w-full mt-16 pt-6">
-            <Component {...pageProps} />
-          </div>
-        </Layout>
-        <Toaster
-          position="top-center"
-          reverseOrder={false}
-          toastOptions={{ duration: 1500 }}
-        />
-      </AuthProvider>
+      <Provider {...pageProps}>
+        <Component {...pageProps} />
+      </Provider>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        toastOptions={{ duration: 1500 }}
+      />
     </RecoilRoot>
   );
 }

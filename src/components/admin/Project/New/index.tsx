@@ -4,9 +4,7 @@ import { isEmpty } from "lib/helper";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 
-interface NewProps {
-  admin: string;
-}
+interface NewProps {}
 
 type PramasProps = {
   name?: string;
@@ -17,7 +15,7 @@ type PramasProps = {
   webUrl: string;
 };
 
-const Index: FC<NewProps> = ({ admin }) => {
+const Index: FC<NewProps> = ({}) => {
   const router = useRouter();
   const inputRef = useRef<any>([]);
   const [postProject, { loading, data, error }]: any = usePostProject(true);
@@ -63,13 +61,12 @@ const Index: FC<NewProps> = ({ admin }) => {
     }
 
     params.name = title;
-    params.admin = admin;
 
     const { status, data } = await postProject(params);
     if (data) {
       toast.success("Done.");
       const timeId = setTimeout(() => {
-        window.location.pathname = `/${admin}`;
+        // window.location.pathname = `/${admin}`;
       }, 600);
 
       return () => clearTimeout(timeId);

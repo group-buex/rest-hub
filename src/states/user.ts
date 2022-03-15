@@ -19,12 +19,15 @@ export const userState = atom({
   },
 });
 
-export const checkAuthSelector = selectorFamily<IUser, any>({
+export const checkAuthSelector = selectorFamily<IUser, string>({
   key: "user/checkAuthSelector",
   get:
-    () =>
+    (user_session: string) =>
     async ({ get }) => {
       try {
+        if (!user_session) {
+          return null;
+        }
         const { data } = await axios.post(`/api/v1/user/check-auth`);
         return data;
       } catch (error) {
