@@ -33,3 +33,15 @@ pre.__json-pretty__ > span.__json-key__ {
 pre.__json-pretty__ > span.__json-string__ {
   color: #4dcfff;
 }
+
+.fade {
+  animation: fade-in 0.2s ease-in;
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

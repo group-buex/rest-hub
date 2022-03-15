@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <AuthProvider>
         <Layout>
           <Header />
-          <div className="flex flex-col w-full mt-16 pt-6">
+          <div className="flex flex-col fade w-full mt-16 pt-6">
             <Component {...pageProps} />
           </div>
         </Layout>

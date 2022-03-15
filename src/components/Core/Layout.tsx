@@ -8,7 +8,7 @@ interface LayoutProps {
 
 const Layout: FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="flex flex-col md:w-9/12 w-11/12 items-center pt-3 pb-24 m-auto">
+    <div className="flex flex-col md:w-9/12 w-10/12 items-center pt-3 pb-24 m-auto">
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Rest Hub" />
