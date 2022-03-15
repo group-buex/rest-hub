@@ -1,3 +1,4 @@
+import { error } from "console";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -26,7 +27,7 @@ export const verifyJwt = async (
     return res.status(400).json({ msg: "Unauthorized.", status: 400 });
   }
   // jwtPayload = await jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET);
-  return token;
+  return token.toString() as string;
 };
 
 export const generateToken = (data: IUser) => {
@@ -57,20 +58,21 @@ export const generateRefreshToken = (data: IUser) => {
     },
     process.env.NEXT_PUBLIC_JWT_SECRET,
     {
-      expiresIn: 60 * 60 * 24 * 14,
+      expiresIn: 1,
+      // expiresIn: 60 * 60 * 24 * 14,
     }
   );
 };
 
 // jwt decode
 export const decodeJwt = async (token: string) => {
-  jwt.verify(
+  return jwt.verify(
     String(token),
-    process.env.NEXT_PUBLIC_JWT_SECRET || "secret",
+    process.env.NEXT_PUBLIC_JWT_SECRET,
     function (err: any, decoded: any) {
-      if (err) return err;
+      if (err) return { status: 500, result: err };
       if (decoded.user !== undefined) {
-        return decoded.user;
+        return { status: 200, result: decoded };
       }
     }
   );

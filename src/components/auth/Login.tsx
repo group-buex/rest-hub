@@ -4,9 +4,13 @@ import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { isEmpty } from "lib/helper";
 import { useLogin } from "actions/user";
+import { useRecoilState } from "recoil";
+import { userState } from "states/user";
+import IUser from "interface/user";
 
 const Login: FC = () => {
   const inputRef = useRef<any>([]);
+  const [user, setUser] = useRecoilState<IUser>(userState);
   const [login, { loading, data, error }]: any = useLogin(true);
 
   const [params, setParams] = useState<{ email: string; password: string }>({
@@ -44,9 +48,10 @@ const Login: FC = () => {
 
     const { status, data } = await login(params);
     if (data) {
+      await setUser(data);
       toast.success("Done.");
       const timeId = setTimeout(() => {
-        // router.push(`/${data._id}`);
+        router.push(`/${data._id}`);
       }, 550);
 
       return () => clearTimeout(timeId);
@@ -88,6 +93,7 @@ const Login: FC = () => {
               id="password"
               type="password"
               placeholder="******************"
+              autoComplete="password"
               onChange={handleInputChange}
             />
           </div>

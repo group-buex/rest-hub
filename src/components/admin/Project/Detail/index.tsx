@@ -1,4 +1,4 @@
-import useGetRecoilState from "hooks/useGetRecoilState";
+import useGetRecoilState from "hooks/useGetRecoilValueLoadable";
 import { IProjectApi } from "interface/project";
 import React, { FC, useEffect } from "react";
 import { useRecoilState } from "recoil";
@@ -19,7 +19,7 @@ const Index: FC<DetailProps> = ({ admin, id }) => {
 
   useEffect(() => {
     state === "hasValue" && setProjectApiList(contents);
-  }, [state]);
+  }, []);
 
   return (
     <div className="">

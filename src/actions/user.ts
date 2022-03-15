@@ -1,10 +1,15 @@
 import { useApiHandler } from "actions";
 import axios from "axios";
+// import cookie from 'js-cookie'
+import Cookie from "js-cookie";
 
 export const login = async (params) => {
   const result = await axios.post("/api/v1/user/login", params);
-  window.sessionStorage.setItem("accessToken", result.data.accessToken);
-  window.sessionStorage.setItem("refreshToken", result.data.refreshToken);
+  Cookie.set("user_session", result.data.accessToken, { expires: 7, path: "" });
+  Cookie.set("user_session_rf", result.data.refreshToken, {
+    expires: 14,
+    path: "",
+  });
   return result;
 };
 

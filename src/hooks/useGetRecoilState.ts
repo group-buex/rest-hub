@@ -1,12 +1,10 @@
-import { RecoilValueReadOnly, useRecoilValueLoadable } from "recoil";
+import { RecoilState, useRecoilValue } from "recoil";
+import { abc } from "states";
 
-function useGetRecoilState<RecoilValueType>(
-  selector: RecoilValueReadOnly<RecoilValueType>
-) {
-  return useRecoilValueLoadable(selector) as {
-    contents: RecoilValueType;
-    state: "hasValue" | "loading" | "hasError";
-  };
+function useGetRecoilState<RecoiStateType>(state: string) {
+  const abc = require(`../states${state}`);
+  const value = useRecoilValue<RecoiStateType>(abc);
+  return value;
 }
 
 export default useGetRecoilState;

@@ -6,17 +6,63 @@ import Users from "../../model/user";
 
 import { CatchType } from "typings";
 import {
+  decodeJwt,
   generateRefreshToken,
   generateToken,
   setDecode,
   verifyJwt,
 } from "../../helper";
 
-const checkAuth = async (req: NextApiRequest, res: NextApiResponse<any>) => {
+/***
+ * check jwt token
+ * @METHOD `POST`
+ * @PATH `/api/v1/user/check-auth`
+ */
+export const checkAuth = async (
+  req: NextApiRequest,
+  res: NextApiResponse<IUser | CatchType>
+) => {
   try {
     const token = await verifyJwt(req, res);
-    await Users.findOne({ accessToken: token }).exec(
-      async (err: Object, user: IUser) => {}
+
+    console.log(token);
+    // TODO: findOneAndUdpate
+    await Users.findOne({ refreshToken: token }).exec(
+      async (err: Object, user: IUser) => {
+        if (!user) {
+          return res.status(500).json({
+            msg: "Can not find User",
+          });
+        }
+
+        const {
+          _id,
+          name,
+          email,
+          type,
+          accessToken,
+          refreshToken,
+          project,
+          seq,
+          createdAt,
+          updatedAt,
+        } = user;
+
+        return res.status(200).json(
+          Object.assign({
+            _id,
+            seq,
+            name,
+            email,
+            type,
+            accessToken,
+            refreshToken,
+            project,
+            createdAt,
+            updatedAt,
+          }) as IUser
+        );
+      }
     );
   } catch (error) {
     return res.status(500).json({
@@ -26,41 +72,39 @@ const checkAuth = async (req: NextApiRequest, res: NextApiResponse<any>) => {
   }
 };
 
+// const checkJWTVerity = async (req: NextApiRequest, res: NextApiResponse<any>) => {
 export const test = async (req: NextApiRequest, res: NextApiResponse<any>) => {
-  const errors: Result<ValidationError> = await validationResult(req);
-  if (!errors.isEmpty()) {
-    const firstError: string = await errors.array().map((err) => err.msg)[0];
-    return res.status(422).json({ msg: firstError });
-  } else {
-    try {
-      await verifyJwt(req, res);
+  try {
+    const token: string = (await verifyJwt(req, res)) as string;
 
-      console.log("through");
-      res.json(200);
-      // await Users.findOne({ email: req.body.email }).exec(
-      //   async (err: Object, user: IUser) => {
-      //     if (user) {
-      //       return res.status(500).json({
-      //         msg: "Email is already exist.",
-      //       });
-      //     }
-      //     if (!user) {
-      //       const newUser = Object.assign(req.body);
+    // check that jwt is verified
+    const { status, result } = (await decodeJwt(token)) as {
+      status: number;
+      result: string;
+    };
 
-      //       newUser.accessToken = await generateToken(req.body);
-      //       newUser.refreshToken = await generateRefreshToken(req.body);
-
-      //       await new Users(newUser).save();
-      //       return res.status(200).json({ msg: "done", error: null });
-      //     }
-      //   }
-      // );
-    } catch (error) {
+    if (status === 200) {
+      await Users.findOne({ refreshToken: token }).exec(
+        async (err: Object, user: IUser) => {
+          if (!user) {
+            return res.status(500).json({
+              msg: "Can not find user.",
+            });
+          }
+          return res.status(200).json(true);
+        }
+      );
+    } else {
       return res.status(500).json({
-        msg: error.message,
-        error,
+        msg: "JsonWebTokenError",
+        error: result,
       });
     }
+  } catch (error) {
+    return res.status(500).json({
+      msg: error.message,
+      error,
+    });
   }
 };
 
@@ -155,13 +199,17 @@ export const login = async (
           });
         }
 
+        const accessToken = await generateToken(req.body);
+        const refreshToken = await generateRefreshToken(req.body);
+
         // update refresh token
         await Users.findByIdAndUpdate(
           { _id: user._id },
           {
-            accessToken: await generateToken(req.body),
-            refreshToken: await generateRefreshToken(req.body),
-          }
+            accessToken,
+            refreshToken,
+          },
+          { new: true, runValidators: true }
         ).exec(async (err: Object, user: IUser) => {
           if (err || !user) {
             return res.status(404).json({
@@ -181,6 +229,8 @@ export const login = async (
             createdAt,
             updatedAt,
           } = user;
+          console.log(accessToken);
+          console.log(user.accessToken);
 
           return res.status(200).json(
             Object.assign({

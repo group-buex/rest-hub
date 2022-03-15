@@ -67,7 +67,7 @@ export function useApiHandler(apiCall, useToast: boolean) {
             });
 
             toast.dismiss(toastId);
-            toast.error(message.msg);
+            toast.error(e.message);
             reject({
               error: message,
               data: null,
