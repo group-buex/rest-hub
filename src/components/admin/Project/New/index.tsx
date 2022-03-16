@@ -3,6 +3,7 @@ import { usePostProject } from "actions/project";
 import { isEmpty } from "lib/helper";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
+import Layout from "components/Core/Layout";
 
 interface NewProps {}
 
@@ -74,87 +75,89 @@ const Index: FC<NewProps> = ({}) => {
   };
 
   return (
-    <div className="flex flex-col w-full">
-      <form
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-        onSubmit={handleSubmit}
-      >
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="title"
-          >
-            Title
-          </label>
-          <input
-            ref={(el) => (inputRef.current[0] = el)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="title"
-            type="text"
-            placeholder="Title"
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="description"
-          >
-            Description
-          </label>
-          <input
-            ref={(el) => (inputRef.current[1] = el)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="description"
-            type="text"
-            placeholder="Description"
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="webUrl"
-          >
-            Web Url
-          </label>
-          <input
-            ref={(el) => (inputRef.current[2] = el)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="webUrl"
-            type="text"
-            placeholder="https://www.rest-hub.com"
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="baseUrl"
-          >
-            Base Url
-          </label>
-          <input
-            ref={(el) => (inputRef.current[3] = el)}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="baseUrl"
-            type="text"
-            placeholder="/api/v1/..."
-            onChange={handleInputChange}
-          />
-        </div>
+    <Layout>
+      <div className="flex flex-col w-full">
+        <form
+          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+          onSubmit={handleSubmit}
+        >
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="title"
+            >
+              Title
+            </label>
+            <input
+              ref={(el) => (inputRef.current[0] = el)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="title"
+              type="text"
+              placeholder="Title"
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="description"
+            >
+              Description
+            </label>
+            <input
+              ref={(el) => (inputRef.current[1] = el)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="description"
+              type="text"
+              placeholder="Description"
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="webUrl"
+            >
+              Web Url
+            </label>
+            <input
+              ref={(el) => (inputRef.current[2] = el)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="webUrl"
+              type="text"
+              placeholder="https://www.rest-hub.com"
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="baseUrl"
+            >
+              Base Url
+            </label>
+            <input
+              ref={(el) => (inputRef.current[3] = el)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="baseUrl"
+              type="text"
+              placeholder="/api/v1/..."
+              onChange={handleInputChange}
+            />
+          </div>
 
-        <div className="flex items-center justify-between">
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            aria-label="submit"
-          >
-            Create
-          </button>
-        </div>
-      </form>
-    </div>
+          <div className="flex items-center justify-between">
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              aria-label="submit"
+            >
+              Create
+            </button>
+          </div>
+        </form>
+      </div>
+    </Layout>
   );
 };
 

@@ -6,4 +6,12 @@ const Login: NextPage = () => {
   return <AuthLogin />;
 };
 
-export default Login;
+export const getServerSideProps = async ({ req }) => {
+  return {
+    props: {
+      user_session: req.cookies.user_session || "",
+    },
+  };
+};
+
+export default withAuth(Login)(false);

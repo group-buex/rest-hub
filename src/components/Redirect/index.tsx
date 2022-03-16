@@ -13,7 +13,7 @@ const Redirect = ({ to, ssr = null }) => {
   return (
     <div>
       {/* <Spinner /> */}
-      <span>Loading...</span>
+      <span>Redirect...</span>
     </div>
   );
 };

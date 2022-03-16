@@ -4,7 +4,7 @@ import React from "react";
 
 const ProjectNoneContents = () => {
   return (
-    <Link href={`/project/new`}>
+    <Link href="/project/new" passHref>
       <motion.a
         role="noneContents"
         className="flex flex-col justify-center w-full bg-white cursor-pointer shadow rounded-lg p-8 relative mb-5"

@@ -7,6 +7,7 @@ import { useRecoilValue } from "recoil";
 import IUser from "interface/user";
 import { userState } from "states/user";
 import ProjectNoneContents from "components/NoneContents/Project";
+import Layout from "components/Core/Layout";
 
 interface ProjectListProps {}
 
@@ -15,14 +16,12 @@ const Index: FC<ProjectListProps> = ({}) => {
 
   const user = useRecoilValue<IUser>(userState);
 
-  console.log(user);
-
   const handleClickItem = async (id: string) => {
     router.push(`/${user._id}/${id}`);
   };
 
   return (
-    <>
+    <Layout>
       <div className="flex flex-row w-full justify-between mb-12">
         <h1 className="text-3xl font-bold text-gray-800">{user.name}</h1>
         <Link href={`/project/new`}>
@@ -39,7 +38,7 @@ const Index: FC<ProjectListProps> = ({}) => {
       ) : (
         <ProjectList list={user.project} onClickItem={handleClickItem} />
       )}
-    </>
+    </Layout>
   );
 };
 

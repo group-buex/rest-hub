@@ -3,7 +3,7 @@ import cookie from "js-cookie";
 
 const api = axios.create({});
 
-const userSession: string = cookie.get("user_session_rf") || null;
+const userSession: string = cookie.get("user_session") || null;
 
 userSession !== null &&
   (api.defaults.headers.common["accessToken"] = "Bearer " + userSession);

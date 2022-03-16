@@ -25,7 +25,6 @@ export const checkAuth = async (
   try {
     const token = await verifyJwt(req, res);
 
-    console.log(token);
     // TODO: findOneAndUdpate
     await Users.findOne({ refreshToken: token }).exec(
       async (err: Object, user: IUser) => {
