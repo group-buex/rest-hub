@@ -18,7 +18,7 @@ const withAuth =
         return <></>;
       }
 
-      if (!userSession || (checkVerify && !contents?._id)) {
+      if (checkVerify && !contents?._id) {
         return <Redirect ssr to="/auth/login" />;
       }
 

@@ -61,7 +61,6 @@ UserSchema.virtual("password")
 UserSchema.methods = {
   // check password
   authenticate: function (plainPassword) {
-    console.log(plainPassword);
     return this.encryptPassword(plainPassword) === this.hash_password;
   },
 

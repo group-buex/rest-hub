@@ -23,6 +23,7 @@ export const getUserSelector = selectorFamily<IUser, string>({
   get:
     (user_session: string) =>
     async ({ get }) => {
+      if (!user_session) return { _id: null };
       return await getUser(user_session);
     },
 });

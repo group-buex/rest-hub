@@ -45,7 +45,6 @@ const GourpItemList: FC<GourpItemListProps> = ({ item }) => {
     });
   };
 
-  console.log(item);
   return (
     <ol className="mb-8">
       {item.list.map((api: IApiList, index: number) => (
