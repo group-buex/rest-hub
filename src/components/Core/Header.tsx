@@ -6,7 +6,7 @@ interface HeaderProps {
   user: IUser;
 }
 
-const Header: FC<HeaderProps> = ({ user }) => {
+const Header: FC<HeaderProps> = ({ user = null }) => {
   return (
     <nav className="flex justify-center w-full pt-3 pb-3 fixed z-10 bg-white top-0 backdrop-blur-2xl shadow">
       <div className="flex items-center justify-between md:w-9/12 w-11/12">
@@ -15,7 +15,7 @@ const Header: FC<HeaderProps> = ({ user }) => {
             Rest Hub <span className="text-sm"># BETA</span>
           </a>
         </Link>
-        {user._id ? (
+        {user?._id ? (
           <div className="flex flex-row justify-center gap-3 mr-6">
             {/* <img
               className="inline object-cover w-8 h-8 rounded-full"

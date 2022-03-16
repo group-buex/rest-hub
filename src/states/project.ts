@@ -1,4 +1,4 @@
-import axios from "actions/axios";
+import axios from "axios";
 import { IProjectApi, IProject } from "interface/project";
 import { atom, selectorFamily } from "recoil";
 

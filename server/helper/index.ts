@@ -1,4 +1,3 @@
-import { error } from "console";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -24,9 +23,8 @@ export const verifyJwt = async (
   const token = await extractAccessToken(req);
 
   if (!token) {
-    return res.status(400).json({ msg: "Unauthorized.", status: 400 });
+    return res.status(401).json({ msg: "Unauthorized.", status: 401 });
   }
-  // jwtPayload = await jwt.verify(token, process.env.NEXT_PUBLIC_JWT_SECRET);
   return token.toString() as string;
 };
 
@@ -80,9 +78,8 @@ export const decodeJwt = async (token: string) => {
 
 export const extractAccessToken = (req: NextApiRequest) => {
   if (
-    (req.headers.accesstoken &&
-      req.headers.accesstoken.toString().split(" ")[0] === "Bearer") ||
-    req.cookies.accesstoken
+    req.headers.accesstoken &&
+    req.headers.accesstoken.toString().split(" ")[0] === "Bearer"
   ) {
     return req.headers.accesstoken.toString().split(" ")[1];
   }

@@ -228,8 +228,6 @@ export const login = async (
             createdAt,
             updatedAt,
           } = user;
-          console.log(accessToken);
-          console.log(user.accessToken);
 
           return res.status(200).json(
             Object.assign({

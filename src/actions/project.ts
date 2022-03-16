@@ -1,5 +1,5 @@
 import { useApiHandler } from "actions";
-import axios from "actions/axios";
+import axios from "axios";
 
 export const postProject = async (params) => {
   return await axios.post("/api/v1/project", params);

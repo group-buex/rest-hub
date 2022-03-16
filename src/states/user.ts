@@ -1,6 +1,6 @@
 import IUser from "interface/user";
 import { atom, selectorFamily } from "recoil";
-import axios from "actions/axios";
+import { getUser } from "actions/user";
 
 export const userState = atom({
   key: "user/userState",
@@ -18,16 +18,11 @@ export const userState = atom({
   },
 });
 
-export const checkAuthSelector = selectorFamily<IUser, string>({
-  key: "user/checkAuthSelector",
+export const getUserSelector = selectorFamily<IUser, string>({
+  key: "user/getUserSelector",
   get:
     (user_session: string) =>
     async ({ get }) => {
-      try {
-        const { data } = await axios.get(`/api/v1/user/check-auth`);
-        return data;
-      } catch (error) {
-        throw error;
-      }
+      return await getUser(user_session);
     },
 });
