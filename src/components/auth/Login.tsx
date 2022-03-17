@@ -51,12 +51,7 @@ const Login: FC = () => {
     const { status, data } = await login(params);
     if (data) {
       await setUser(data);
-      toast.success("Done.");
-      const timeId = setTimeout(() => {
-        router.push(`/project`);
-      }, 550);
-
-      return () => clearTimeout(timeId);
+      router.push(`/project`);
     }
   };
   return (

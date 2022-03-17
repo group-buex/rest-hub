@@ -9,6 +9,7 @@ export const getUser = async (userSession: string) => {
     const { data } = await axios.get("/api/v1/user/check-auth");
     return data;
   } catch (error) {
+    console.log(Cookie.get("user_session"));
     axios.defaults.headers.common["accessToken"];
     Cookie.remove("user_session");
     console.error(error);
@@ -16,7 +17,7 @@ export const getUser = async (userSession: string) => {
 };
 
 export const login = async (params) => {
-  const result = await axios.post("/api/v1/user/login", params);
+  const result = await axios.post(`/api/v1/user/login`, params);
   if (result) {
     axios.defaults.headers.common["accessToken"] =
       "Bearer " + result.data.refreshToken;
@@ -31,6 +32,13 @@ export const login = async (params) => {
   }
   return;
 };
+
+export const postUserProject = async (params) => {
+  return await axios.post("/api/v1/user/project", params);
+};
+
+export const usePostUserProject = (useToast: boolean = false) =>
+  useApiHandler(postUserProject, useToast);
 
 export const useLogin = (useToast: boolean = false) =>
   useApiHandler(login, useToast);

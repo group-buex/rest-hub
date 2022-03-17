@@ -7,12 +7,18 @@ autoIncrement.initialize(mongoose.connection);
 const ProjectSchema: Schema<IProject> = new Schema(
   {
     seq: { type: Number, required: true },
-    name: { type: String, required: true, maxlength: 128 },
     title: { type: String, required: true, maxlength: 256 },
     description: { type: String, required: true, maxlength: 512 },
     baseUrl: { type: String, required: true, maxlength: 256 },
     admin: { type: String, required: true, maxlength: 128 },
     webUrl: { type: String, required: true, maxlength: 256 },
+    member: [
+      {
+        seq: { type: Number, require: true },
+        userEmail: { type: String, maxlength: 128 },
+        role: { type: String, maxlength: 8, default: "guest" },
+      },
+    ],
   },
   {
     timestamps: true,

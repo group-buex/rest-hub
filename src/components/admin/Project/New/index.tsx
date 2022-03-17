@@ -1,9 +1,12 @@
 import React, { FC, useCallback, useState, useRef } from "react";
-import { usePostProject } from "actions/project";
+import { usePostUserProject } from "actions/user";
 import { isEmpty } from "lib/helper";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import Layout from "components/Core/Layout";
+
+import IconAdd from "/assets/add.svg";
+import IconClear from "/assets/clear.svg";
 
 interface NewProps {}
 
@@ -14,19 +17,27 @@ type PramasProps = {
   description: string;
   baseUrl: string;
   webUrl: string;
+  members: string[];
 };
 
 const Index: FC<NewProps> = ({}) => {
   const router = useRouter();
   const inputRef = useRef<any>([]);
-  const [postProject, { loading, data, error }]: any = usePostProject(true);
+  const [postUserProject, { loading, data, error }]: any =
+    usePostUserProject(true);
 
+  const [memberEmail, setMemberEmail] = useState<string>("");
   const [params, setParams] = useState<PramasProps>({
     title: null,
     description: null,
     baseUrl: null,
     webUrl: null,
+    members: [],
   });
+
+  const handleMemberEmailChange = (e) => {
+    setMemberEmail(e.target.value);
+  };
 
   const handleInputChange = useCallback(
     (e) => {
@@ -38,6 +49,28 @@ const Index: FC<NewProps> = ({}) => {
     },
     [params]
   );
+
+  const handleClickAddMember = () => {
+    if (isEmpty(memberEmail)) {
+      inputRef.current[4].focus();
+      return toast.error("Enter a new Member");
+    }
+    if (params.members.includes(memberEmail)) {
+      inputRef.current[4].select();
+      inputRef.current[4].focus();
+      return toast.error("Member already exists");
+    }
+    // TODO: Validation
+    setMemberEmail("");
+    setParams({ ...params, members: [...params.members, memberEmail] });
+  };
+
+  const handleClickRemoveMember = (member: string) => {
+    setParams({
+      ...params,
+      members: [...params.members.filter((item: string) => item !== member)],
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,14 +96,9 @@ const Index: FC<NewProps> = ({}) => {
 
     params.name = title;
 
-    const { status, data } = await postProject(params);
+    const { status, data } = await postUserProject(params);
     if (data) {
-      toast.success("Done.");
-      const timeId = setTimeout(() => {
-        // window.location.pathname = `/${admin}`;
-      }, 600);
-
-      return () => clearTimeout(timeId);
+      router.push("/project");
     }
   };
 
@@ -144,6 +172,55 @@ const Index: FC<NewProps> = ({}) => {
               placeholder="/api/v1/..."
               onChange={handleInputChange}
             />
+          </div>
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="member"
+            >
+              Member
+            </label>
+            <div className="flex flex-row gap-2">
+              <input
+                ref={(el) => (inputRef.current[4] = el)}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="member"
+                type="text"
+                value={memberEmail}
+                placeholder="member@domain"
+                autoComplete="member"
+                onKeyPress={(e) => {
+                  if (e.code === "Enter") {
+                    handleClickAddMember();
+                  }
+                }}
+                onChange={handleMemberEmailChange}
+              />
+              <button
+                type="button"
+                className="flex items-center justify-center w-[36px] shadow appearance-none border rounded"
+                onClick={handleClickAddMember}
+              >
+                <IconAdd />
+              </button>
+            </div>
+
+            <span>
+              {params.members.map((item) => (
+                <div key={item} className="flex flex-row gap-2 mt-2">
+                  <p className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    {item}
+                  </p>
+                  <button
+                    type="button"
+                    className="flex items-center justify-center w-[36px] shadow appearance-none border rounded"
+                    onClick={() => handleClickRemoveMember(item)}
+                  >
+                    <IconClear />
+                  </button>
+                </div>
+              ))}
+            </span>
           </div>
 
           <div className="flex items-center justify-between">

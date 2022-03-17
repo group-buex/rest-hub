@@ -253,3 +253,38 @@ export const login = async (
     }
   }
 };
+
+/***
+ * Post Add New Project
+ * @METHOD `POST`
+ * @PATH `/api/v1/project`
+ */
+export const postUserProject = async (
+  req: NextApiRequest,
+  res: NextApiResponse<IUser | CatchType>
+) => {
+  const errors: Result<ValidationError> = await validationResult(req);
+  if (!errors.isEmpty()) {
+    const firstError: string = await errors.array().map((err) => err.msg)[0];
+    return res.status(422).json({ msg: firstError });
+  } else {
+    try {
+      await Users.findByIdAndUpdate({ _id: "" }, req.body, {
+        new: true,
+        runValidators: true,
+      }).exec(async (err: Object, user: IUser) => {
+        if (err || !user) {
+          return res.status(404).json({
+            msg: "Can not found user",
+          });
+        }
+        return res.status(200).json(user);
+      });
+    } catch (error) {
+      return res.status(500).json({
+        msg: error.message,
+        error,
+      });
+    }
+  }
+};

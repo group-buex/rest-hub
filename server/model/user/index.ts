@@ -18,19 +18,15 @@ const UserSchema: Schema<IUser> = new Schema(
     project: [
       {
         seq: { type: Number, required: true },
-        name: { type: String, required: true, maxlength: 128 },
-        title: { type: String, required: true, maxlength: 256 },
-        description: { type: String, required: true, maxlength: 512 },
-        baseUrl: { type: String, required: true, maxlength: 256 },
-        admin: { type: String, required: true, maxlength: 128 },
-        webUrl: { type: String, required: true, maxlength: 256 },
-        member: [
-          {
-            seq: { type: Number },
-            userId: { type: String, maxlength: 128 },
-            role: { type: String, maxlength: 8 },
-          },
-        ],
+        projectId: { type: String, required: true, maxlength: 256 },
+        role: { type: String, maxlength: 8, require: true, default: "admin" },
+      },
+    ],
+    shared: [
+      {
+        seq: { type: Number, required: true },
+        projectId: { type: String, required: true, maxlength: 256 },
+        role: { type: String, maxlength: 8, require: true, default: "admin" },
       },
     ],
   },

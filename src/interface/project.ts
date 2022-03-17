@@ -7,7 +7,7 @@ export interface IProject {
   baseUrl: string;
   admin: string;
   webUrl: string;
-  member?: IMember[];
+  members?: IMember[];
   createdAt: Date;
   updatedAt: Date;
 }
