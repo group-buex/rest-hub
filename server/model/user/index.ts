@@ -12,7 +12,7 @@ const UserSchema: Schema<IUser> = new Schema(
     email: { type: String, required: true, maxlength: 256, unique: true },
     hash_password: { type: String, required: true, maxlength: 256 },
     salt: { type: String, required: true },
-    type: { type: String, required: true },
+    type: { type: String, required: true, default: "sign" },
     accessToken: { type: String, required: true },
     refreshToken: { type: String, required: true },
     project: [
@@ -26,7 +26,7 @@ const UserSchema: Schema<IUser> = new Schema(
       {
         seq: { type: Number, required: true },
         projectId: { type: String, required: true, maxlength: 256 },
-        role: { type: String, maxlength: 8, require: true, default: "admin" },
+        role: { type: String, maxlength: 8, require: true, default: "guset" },
       },
     ],
   },

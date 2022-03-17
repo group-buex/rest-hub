@@ -32,6 +32,7 @@ export const generateToken = (data: IUser) => {
   return jwt.sign(
     {
       user: {
+        _id: data._id,
         name: data.name,
         email: data.email,
         type: data.type,
@@ -48,6 +49,7 @@ export const generateRefreshToken = (data: IUser) => {
   return jwt.sign(
     {
       user: {
+        _id: data._id,
         name: data.name,
         email: data.email,
         type: data.type,
@@ -56,8 +58,7 @@ export const generateRefreshToken = (data: IUser) => {
     },
     process.env.NEXT_PUBLIC_JWT_SECRET,
     {
-      expiresIn: 1,
-      // expiresIn: 60 * 60 * 24 * 14,
+      expiresIn: 60 * 60 * 24 * 14,
     }
   );
 };
@@ -78,9 +79,16 @@ export const decodeJwt = async (token: string) => {
 
 export const extractAccessToken = (req: NextApiRequest) => {
   if (
-    req.headers.accesstoken &&
-    req.headers.accesstoken.toString().split(" ")[0] === "Bearer"
+    req.headers.authorization &&
+    req.headers.authorization.toString().split(" ")[0] === "Bearer"
   ) {
-    return req.headers.accesstoken.toString().split(" ")[1];
+    return req.headers.authorization.toString().split(" ")[1];
   }
+};
+
+export const getUserByToken = async (token: string) => {
+  const {
+    result: { user },
+  } = await decodeJwt(token);
+  return user;
 };

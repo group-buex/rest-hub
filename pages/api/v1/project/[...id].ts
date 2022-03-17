@@ -9,8 +9,6 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<any | CatchType>
 ) => {
-  if (req.method === "POST") return await postProject(req, res);
-
   try {
     const id = req.query.id as string[];
 
@@ -26,7 +24,7 @@ const handler = async (
         // }
       }
       if (req.method === "POST") {
-        if (router === "") {
+        if (router === "new") {
           await postProject(req, res);
         }
       }

@@ -1,13 +1,17 @@
+import { decodeJwt } from "./../../helper/index";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Result, ValidationError, validationResult } from "express-validator";
 import { mongo } from "mongoose";
 
 import IProject from "../../interface/project";
+import IUser from "../../interface/user";
 import IApi from "../../interface/api";
 import Projects from "../../model/project";
+import Users from "../../model/user";
 import Apis from "../../model/api";
 
 import { CatchType } from "typings";
+import { getUserByToken, verifyJwt } from "../../helper";
 
 /***
  * Post Add New Project
@@ -24,8 +28,22 @@ export const postProject = async (
     return res.status(422).json({ msg: firstError });
   } else {
     try {
-      const newProject: IProject[] = await new Projects(req.body).save();
-      return res.status(200).json(newProject);
+      const token: string = (await verifyJwt(req, res)) as string;
+      const decoded = await getUserByToken(token);
+      console.log(decoded);
+      if (token) {
+        // const newProject: IProject[] = await new Projects(req.body).save();
+      }
+      // const user = await getUserByToken(token);
+      // const newProject: IProject[] = await new Projects(req.body).save();
+
+      // if (newProject) {
+      //   // await Users.findByIdAndUpdate({_id})
+      //   return res.status(200).json(newProject);
+      // }
+      return res
+        .status(500)
+        .json({ msg: "Can not Create a project. Try again" });
     } catch (error) {
       return res.status(500).json({
         msg: error.message,

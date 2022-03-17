@@ -126,7 +126,7 @@ export const postUser = async (
         async (err: Object, user: IUser) => {
           if (user) {
             return res.status(500).json({
-              msg: "Email is already exist.",
+              msg: "Email already used",
             });
           }
           if (!user) {
@@ -137,6 +137,8 @@ export const postUser = async (
 
             await new Users(newUser).save();
             return res.status(200).json({ msg: "done", error: null });
+          } else {
+            return res.status(401).json({ msg: "Email already used" });
           }
         }
       );

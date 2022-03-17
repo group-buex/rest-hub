@@ -28,18 +28,18 @@ const handler = async (
         }
       }
       if (req.method === "POST") {
-        if (router === "") {
-          return await postUser(req, res);
-        }
         if (router === "project") {
           return await postUserProject(req, res);
         }
         if (router === "login") {
           return await login(req, res);
         }
+        if (router === "sign-up") {
+          return await postUser(req, res);
+        }
         if (router === "logout") {
           await Cookie.remove("user_session");
-          axios.defaults.headers.common["accessToken"] = null;
+          axios.defaults.headers.common["authorization"] = null;
           return await login(req, res);
         }
       }

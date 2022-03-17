@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useState, useRef } from "react";
-import { usePostUserProject } from "actions/user";
+import { usePostProject } from "actions/project";
 import { isEmpty } from "lib/helper";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
@@ -23,8 +23,7 @@ type PramasProps = {
 const Index: FC<NewProps> = ({}) => {
   const router = useRouter();
   const inputRef = useRef<any>([]);
-  const [postUserProject, { loading, data, error }]: any =
-    usePostUserProject(true);
+  const [postProject, { loading, data, error }]: any = usePostProject(true);
 
   const [memberEmail, setMemberEmail] = useState<string>("");
   const [params, setParams] = useState<PramasProps>({
@@ -96,7 +95,7 @@ const Index: FC<NewProps> = ({}) => {
 
     params.name = title;
 
-    const { status, data } = await postUserProject(params);
+    const { status, data } = await postProject(params);
     if (data) {
       router.push("/project");
     }

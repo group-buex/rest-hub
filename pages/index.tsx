@@ -10,7 +10,7 @@ const Home: NextPage = () => {
         <Link href="/auth/login">
           <a>login</a>
         </Link>
-        <Link href="/auth/sign-in">
+        <Link href="/auth/sign-up">
           <a>sign</a>
         </Link>
         <Link href="/project">

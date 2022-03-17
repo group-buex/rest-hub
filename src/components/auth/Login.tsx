@@ -39,13 +39,13 @@ const Login: FC = () => {
     const [emailRef, passwordRef] = inputRef.current;
 
     // TODO: email validation
-    if (isEmpty(email)) {
+    if (isEmpty(email.trim())) {
       emailRef.focus();
-      return toast.error("Email field is empty");
+      return toast.error("Email is required");
     }
-    if (isEmpty(password)) {
+    if (isEmpty(password.trim())) {
       passwordRef.focus();
-      return toast.error("Password field is empty");
+      return toast.error("Password is required");
     }
 
     const { status, data } = await login(params);
@@ -56,7 +56,7 @@ const Login: FC = () => {
   };
   return (
     <Layout title="Login" loading={loading}>
-      <div className="fade w-full max-w-xs mt-32">
+      <div className="fade w-full max-w-xs">
         <form
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
           onSubmit={handleSubmit}
@@ -102,11 +102,8 @@ const Login: FC = () => {
             >
               Login
             </button>
-            <Link href="/project/list">
-              <a
-                className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-                href="#"
-              >
+            <Link href="/auth/sign-up">
+              <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
                 Start Free
               </a>
             </Link>
