@@ -60,27 +60,30 @@ export const postProject = async (
           );
 
           // push shared for members
-          await req.body.member.forEach(async (member) => {
-            if (member.email !== userEmail) {
-              await Users.findOneAndUpdate(
-                { email: member.email },
-                {
-                  $push: {
-                    shared: {
-                      authorEmail: userEmail,
-                      authorId: userId,
-                      projectId,
-                      role: member.role,
-                      title,
-                      description,
-                      createdAt,
+          // (length === 1) is only have author alone
+          if (req.body.member.length > 1) {
+            await req.body.member.forEach(async (member) => {
+              if (member.email !== userEmail) {
+                await Users.findOneAndUpdate(
+                  { email: member.email },
+                  {
+                    $push: {
+                      shared: {
+                        authorEmail: userEmail,
+                        authorId: userId,
+                        projectId,
+                        role: member.role,
+                        title,
+                        description,
+                        createdAt,
+                      },
                     },
                   },
-                },
-                { new: true, runValidators: true }
-              );
-            }
-          });
+                  { new: true, runValidators: true }
+                );
+              }
+            });
+          }
 
           return res.status(200).json(newProject);
         }
