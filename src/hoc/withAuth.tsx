@@ -10,11 +10,12 @@ const withAuth =
   (checkVerify = true) => {
     return (props) => {
       const userSession = props.user_session;
+
       const { contents, state } = useRecoilValueLoadable(
         getUserSelector(userSession)
       );
 
-      if (state === "loading") {
+      if (state === "loading" || !contents) {
         return <></>;
       }
 

@@ -12,13 +12,13 @@ export const projectApiState = atom({
   default: null,
 });
 
-export const getProjectListSelector = selectorFamily<IProject[], string>({
+export const getProjectListSelector = selectorFamily<IProject[], undefined>({
   key: "project/getProjectListSelector",
   get:
-    (param: string) =>
+    () =>
     async ({ get }) => {
       try {
-        const { data } = await axios.get(`/api/v1/project/${param}`);
+        const { data } = await axios.get("/api/v1/project/list");
         return data;
       } catch (error) {
         throw error;

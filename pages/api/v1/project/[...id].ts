@@ -16,6 +16,9 @@ const handler = async (
       const router = id[0];
 
       if (req.method === "GET") {
+        if (router === "list") {
+          // return await getProject(req,res)
+        }
         // if (req.method === "GET" && req.query.id.length === 1) {
         //   return await getProjectListByAdmin(req, res);
         // }
@@ -25,7 +28,7 @@ const handler = async (
       }
       if (req.method === "POST") {
         if (router === "new") {
-          await postProject(req, res);
+          return await postProject(req, res);
         }
       }
       return null;

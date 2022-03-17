@@ -33,7 +33,7 @@ export function useApiHandler(apiCall, useToast: boolean) {
               error: null,
               data: json?.data ?? null,
               loading: false,
-              status: json.status,
+              status: json?.status,
             });
           }, 500);
 
@@ -51,7 +51,7 @@ export function useApiHandler(apiCall, useToast: boolean) {
           error: null,
           data: json?.data ?? null,
           loading: false,
-          status: json.status,
+          status: json?.status,
         });
       } catch (e) {
         const message =

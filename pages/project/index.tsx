@@ -19,4 +19,4 @@ export const getServerSideProps: GetServerSideProps<{
   };
 };
 
-export default withAuth(Index)();
+export default withAuth(Index)(true);
