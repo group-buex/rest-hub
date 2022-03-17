@@ -17,16 +17,22 @@ const UserSchema: Schema<IUser> = new Schema(
     refreshToken: { type: String, required: true },
     project: [
       {
-        seq: { type: Number, required: true },
         projectId: { type: String, required: true, maxlength: 256 },
-        role: { type: String, maxlength: 8, require: true, default: "admin" },
+        role: { type: String, maxlength: 8, require: true, default: "owner" },
+        title: { type: String, required: true, maxlength: 256 },
+        description: { type: String, required: true, maxlength: 512 },
+        createdAt: { type: Date, required: true },
       },
     ],
     shared: [
       {
-        seq: { type: Number, required: true },
+        authorId: { type: String, required: true, maxlength: 256 },
+        authorEmail: { type: String, required: true, maxlength: 256 },
         projectId: { type: String, required: true, maxlength: 256 },
         role: { type: String, maxlength: 8, require: true, default: "guset" },
+        title: { type: String, required: true, maxlength: 256 },
+        description: { type: String, required: true, maxlength: 512 },
+        createdAt: { type: Date, required: true },
       },
     ],
   },

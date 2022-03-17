@@ -18,10 +18,11 @@ export default interface IUser extends Document {
 
 export interface IUserProject {
   _id: string;
-  seq: number;
+  authorEmail?: string;
+  authorId?: string;
   role: string;
   projectId: string;
   title: string;
   description: string;
-  updatedAt: Date;
+  createdAt: Date;
 }

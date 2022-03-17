@@ -11,7 +11,7 @@ import Users from "../../model/user";
 import Apis from "../../model/api";
 
 import { CatchType } from "typings";
-import { getUserIdByToken, verifyJwt } from "../../helper";
+import { getUserByToken, verifyJwt } from "../../helper";
 
 /***
  * Post Add New Project
@@ -20,7 +20,7 @@ import { getUserIdByToken, verifyJwt } from "../../helper";
  */
 export const postProject = async (
   req: NextApiRequest,
-  res: NextApiResponse<IProject[] | CatchType>
+  res: NextApiResponse<IProject | CatchType>
 ) => {
   const errors: Result<ValidationError> = await validationResult(req);
   if (!errors.isEmpty()) {
@@ -28,16 +28,67 @@ export const postProject = async (
     return res.status(422).json({ msg: firstError });
   } else {
     try {
-      // const user = await getUserByToken(token);
-      // const newProject: IProject[] = await new Projects(req.body).save();
+      const token: string = (await verifyJwt(req, res)) as string;
+      const { userId, userEmail } = await getUserByToken(token);
+      if (userId) {
+        req.body.authorId = userId;
+        const newProject: IProject = await new Projects(req.body).save();
+        const {
+          _id: projectId,
+          title,
+          description,
+          member,
+          createdAt,
+        } = newProject;
 
-      // if (newProject) {
-      //   // await Users.findByIdAndUpdate({_id})
-      //   return res.status(200).json(newProject);
-      // }
-      return res
-        .status(500)
-        .json({ msg: "Can not Create a project. Try again" });
+        if (newProject) {
+          // push project for creator
+          await Users.findOneAndUpdate(
+            { email: userEmail },
+            {
+              $push: {
+                project: {
+                  projectId,
+                  role: "owner",
+                  title,
+                  description,
+                  createdAt,
+                },
+              },
+            },
+            { new: true, runValidators: true }
+          );
+
+          // push shared for members
+          await req.body.member.forEach(async (member) => {
+            if (member.email !== userEmail) {
+              await Users.findOneAndUpdate(
+                { email: member.email },
+                {
+                  $push: {
+                    shared: {
+                      authorEmail: userEmail,
+                      authorId: userId,
+                      projectId,
+                      role: member.role,
+                      title,
+                      description,
+                      createdAt,
+                    },
+                  },
+                },
+                { new: true, runValidators: true }
+              );
+            }
+          });
+
+          return res.status(200).json(newProject);
+        }
+
+        return res.status(500).json({ msg: "Can not created project" });
+      } else {
+        return res.status(401).json({ msg: "Unauthorized" });
+      }
     } catch (error) {
       return res.status(500).json({
         msg: error.message,
@@ -64,11 +115,6 @@ export const getProject = async (
   } else {
     try {
       const token: string = (await verifyJwt(req, res)) as string;
-      const decoded = await getUserIdByToken(token);
-      if (token) {
-        console.log(decoded);
-        // const newProject: IProject[] = await new Projects(req.body).save();
-      }
 
       //   if (!admin) {
       //     return res.status(401).json({
@@ -108,7 +154,10 @@ export const getApiListByProjectId = async (
   } else {
     try {
       const token: string = (await verifyJwt(req, res)) as string;
-      const userId: string = (await getUserIdByToken(token)) as string;
+      const { userId }: { userId: string } = (await getUserByToken(token)) as {
+        userId: string;
+      };
+
       if (token) {
         // const newProject: IProject[] = await new Projects(req.body).save();
         console.log(userId);
