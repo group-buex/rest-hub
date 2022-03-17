@@ -5,7 +5,8 @@ import New from "components/admin/Project/New";
 interface NewProjectProps {}
 
 const NewProject: NextPage<NewProjectProps> = ({}) => {
-  return <New />;
+  // return <New />;
+  return <div>null</div>;
 };
 
 export const getServerSideProps: GetServerSideProps<{

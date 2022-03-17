@@ -15,6 +15,8 @@ const withAuth =
         getUserSelector(userSession)
       );
 
+      // * contents must be exist before running withAuth hoc.
+
       if (state === "loading" || !contents) {
         return <></>;
       }

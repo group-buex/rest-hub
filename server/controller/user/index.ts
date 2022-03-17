@@ -42,6 +42,7 @@ export const checkAuth = async (
           accessToken,
           refreshToken,
           project,
+          shared,
           seq,
           createdAt,
           updatedAt,
@@ -57,6 +58,7 @@ export const checkAuth = async (
             accessToken,
             refreshToken,
             project,
+            shared,
             createdAt,
             updatedAt,
           }) as IUser
@@ -200,8 +202,8 @@ export const login = async (
           });
         }
 
-        const accessToken = await generateToken(req.body);
-        const refreshToken = await generateRefreshToken(req.body);
+        const accessToken = await generateToken(user);
+        const refreshToken = await generateRefreshToken(user);
 
         // update refresh token
         await Users.findByIdAndUpdate(
@@ -226,6 +228,7 @@ export const login = async (
             accessToken,
             refreshToken,
             project,
+            shared,
             seq,
             createdAt,
             updatedAt,
@@ -241,6 +244,7 @@ export const login = async (
               accessToken,
               refreshToken,
               project,
+              shared,
               createdAt,
               updatedAt,
             }) as IUser

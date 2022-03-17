@@ -86,9 +86,9 @@ export const extractAccessToken = (req: NextApiRequest) => {
   }
 };
 
-export const getUserByToken = async (token: string) => {
+export const getUserIdByToken = async (token: string) => {
   const {
     result: { user },
   } = await decodeJwt(token);
-  return user;
+  return user._id as string;
 };

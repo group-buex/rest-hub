@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import connectDB from "../../../../server/middleware/mongodb";
 
 import { CatchType } from "typings";
-import { postProject } from "../../../../server/controller/project";
+import { getProject, postProject } from "../../../../server/controller/project";
 
 const handler = async (
   req: NextApiRequest,
@@ -17,7 +17,7 @@ const handler = async (
 
       if (req.method === "GET") {
         if (router === "list") {
-          // return await getProject(req,res)
+          return await getProject(req, res);
         }
         // if (req.method === "GET" && req.query.id.length === 1) {
         //   return await getProjectListByAdmin(req, res);

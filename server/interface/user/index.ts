@@ -10,15 +10,18 @@ export default interface IUser extends Document {
   type: string;
   accessToken: string;
   refreshToken: string;
-  project?: IProject[]; // 본인이 소유한 프로젝트
-  shared?: IProject[]; // 공유된 프로젝트
+  project?: IUserProject[]; // 본인이 소유한 프로젝트
+  shared?: IUserProject[]; // 공유된 프로젝트
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface IProject {
+export interface IUserProject {
   _id: string;
   seq: number;
-  projectId: string;
   role: string;
+  projectId: string;
+  title: string;
+  description: string;
+  updatedAt: Date;
 }

@@ -1,10 +1,10 @@
 import React, { FC, useCallback } from "react";
 import { motion } from "framer-motion";
-import { IProject } from "interface/project";
+import { IUserProject } from "interface/user";
 import { format } from "date-fns";
 
 interface ListProps {
-  list: IProject[];
+  list: IUserProject[];
   onClickItem: (id: string) => void;
 }
 
@@ -16,7 +16,7 @@ const Index: FC<ListProps> = ({ list, onClickItem }) => {
   return (
     <>
       {list.length > 0 &&
-        list.map((item: IProject, index: number) => {
+        list.map((item: IUserProject, index: number) => {
           return (
             <motion.div
               key={item._id}
@@ -33,7 +33,7 @@ const Index: FC<ListProps> = ({ list, onClickItem }) => {
                   {item.title}
                 </h2>
                 <p className="text-sm leading-6 text-gray-400">
-                  {format(new Date(item.createdAt), "dd/MM/yyyy")}
+                  {format(new Date(item.updatedAt), "dd/MM/yyyy")}
                 </p>
               </div>
               <p className="text-base leading-6 mt-4 text-gray-500">

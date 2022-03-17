@@ -11,7 +11,7 @@ import Users from "../../model/user";
 import Apis from "../../model/api";
 
 import { CatchType } from "typings";
-import { getUserByToken, verifyJwt } from "../../helper";
+import { getUserIdByToken, verifyJwt } from "../../helper";
 
 /***
  * Post Add New Project
@@ -28,12 +28,6 @@ export const postProject = async (
     return res.status(422).json({ msg: firstError });
   } else {
     try {
-      const token: string = (await verifyJwt(req, res)) as string;
-      const decoded = await getUserByToken(token);
-      console.log(decoded);
-      if (token) {
-        // const newProject: IProject[] = await new Projects(req.body).save();
-      }
       // const user = await getUserByToken(token);
       // const newProject: IProject[] = await new Projects(req.body).save();
 
@@ -56,9 +50,9 @@ export const postProject = async (
 /***
  * GET Project List
  * @METHOD `GET`
- * @PATH `/api/v1/project/:admin`
+ * @PATH `/api/v1/project/list`
  */
-export const getProjectListByAdmin = async (
+export const getProject = async (
   req: NextApiRequest,
   res: NextApiResponse<IProject[] | CatchType>
 ) => {
@@ -68,27 +62,29 @@ export const getProjectListByAdmin = async (
     const firstError: string = await errors.array().map((err) => err.msg)[0];
     return res.status(422).json({ msg: firstError });
   } else {
-    const {
-      id: [admin],
-    } = req.query as { id: string[] };
-
     try {
-      if (!admin) {
-        return res.status(401).json({
-          msg: "Unauthorized.",
-        });
+      const token: string = (await verifyJwt(req, res)) as string;
+      const decoded = await getUserIdByToken(token);
+      if (token) {
+        console.log(decoded);
+        // const newProject: IProject[] = await new Projects(req.body).save();
       }
 
-      await Projects.find({ admin })
-        .sort({ createdAt: -1 })
-        .exec(async (err: Object, inquery: IProject[]) => {
-          if (err) {
-            return res.status(400).json({ msg: JSON.stringify(err) });
-          }
-          return res.status(200).json(inquery);
-        });
+      //   if (!admin) {
+      //     return res.status(401).json({
+      //       msg: "Unauthorized.",
+      //     });
+      //   }
+      //   await Projects.find({ admin })
+      //     .sort({ createdAt: -1 })
+      //     .exec(async (err: Object, inquery: IProject[]) => {
+      //       if (err) {
+      //         return res.status(400).json({ msg: JSON.stringify(err) });
+      //       }
+      //       return res.status(200).json(inquery);
+      //     });
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         msg: error.message,
         error,
       });
@@ -111,30 +107,37 @@ export const getApiListByProjectId = async (
     return res.status(422).json({ msg: firstError });
   } else {
     try {
-      const {
-        id: [, _id],
-      } = req.query as { id: string[] };
+      const token: string = (await verifyJwt(req, res)) as string;
+      const userId: string = (await getUserIdByToken(token)) as string;
+      if (token) {
+        // const newProject: IProject[] = await new Projects(req.body).save();
+        console.log(userId);
+      }
 
-      await Projects.findById({ _id }).exec(
-        async (err: Object, project: IProject) => {
-          if (err || !project) {
-            return res.status(404).json({
-              msg: "Can not found project",
-            });
-          }
+      // const {
+      //   id: [, _id],
+      // } = req.query as { id: string[] };
 
-          await Apis.find({ projectId: _id }).exec(
-            (err: Object, api: IApi[]) => {
-              if (err || !api) {
-                return res.status(404).json({
-                  msg: "Can not found api list",
-                });
-              }
-              return res.status(200).json({ project, api });
-            }
-          );
-        }
-      );
+      // await Projects.findById({ _id }).exec(
+      //   async (err: Object, project: IProject) => {
+      //     if (err || !project) {
+      //       return res.status(404).json({
+      //         msg: "Can not found project",
+      //       });
+      //     }
+
+      //     await Apis.find({ projectId: _id }).exec(
+      //       (err: Object, api: IApi[]) => {
+      //         if (err || !api) {
+      //           return res.status(404).json({
+      //             msg: "Can not found api list",
+      //           });
+      //         }
+      //         return res.status(200).json({ project, api });
+      //       }
+      //     );
+      //   }
+      // );
     } catch (error) {
       return res.status(500).json({
         msg: error.message,
