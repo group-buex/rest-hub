@@ -1,6 +1,6 @@
 import React from "react";
 import { GetServerSideProps, NextPage } from "next";
-import Detail from "components/admin/Project/Detail";
+import Detail from "components/Project/Detail";
 
 interface DetailProps {
   param: { admin: string; id: string };

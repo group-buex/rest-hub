@@ -35,7 +35,7 @@ const Layout: FC<LayoutProps> = ({
         <title>{!loading ? title : "Loading..."}</title>
       </Head>
       <Header user={user} />
-      <SideBar user={user} />
+      {user._id && <SideBar user={user} />}
       <div className="flex flex-col fade w-full mt-16 pt-6">
         <div className="flex flex-col md:w-11/12 w-11/12 items-center pt-3 m-auto">
           {children}

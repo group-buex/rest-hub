@@ -1,6 +1,6 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
-import New from "components/admin/Project/New";
+import New from "components/Project/New";
 
 interface NewProjectProps {}
 

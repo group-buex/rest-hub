@@ -40,9 +40,9 @@ const Index: FC<ProjectListProps> = ({}) => {
       ) : (
         <ProjectList list={user.project} onClickItem={handleClickItem} />
       )}
-
+      {/* 
       {user?.project?.length === 0 ? <div>1</div> : <div>2</div>}
-      {user?.shared?.length === 0 ? <div>1</div> : <div>2</div>}
+      {user?.shared?.length === 0 ? <div>1</div> : <div>2</div>} */}
     </Layout>
   );
 };
