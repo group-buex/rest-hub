@@ -35,11 +35,11 @@ const Layout: FC<LayoutProps> = ({
       </Head>
       <Header user={user} />
       <div className="flex flex-col fade w-full mt-16 pt-6">
-        <div className="flex flex-col md:w-9/12 w-10/12 items-center pt-3 m-auto">
+        <div className="flex flex-col md:w-11/12 w-11/12 items-center pt-3 m-auto">
           {children}
         </div>
         {loading && (
-          <div className="absolute top-0 w-full h-full z-10 bg-gray-50 opacity-[0.5]" />
+          <div className="absolute top-0 w-full h-full z-10 opacity-[0.5] bg-[#292929]" />
         )}
       </div>
     </>

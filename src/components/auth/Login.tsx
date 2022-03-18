@@ -58,19 +58,16 @@ const Login: FC = () => {
     <Layout title="Login" loading={loading}>
       <div className="fade w-full max-w-xs">
         <form
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+          className="shadow-md rounded px-8 pt-6 pb-8 mb-4 border"
           onSubmit={handleSubmit}
         >
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="email"
-            >
+            <label className="block text-sm font-bold mb-2" htmlFor="email">
               Email
             </label>
             <input
               ref={(el) => (inputRef.current[0] = el)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
               id="email"
               type="text"
               placeholder="email"
@@ -78,15 +75,12 @@ const Login: FC = () => {
             />
           </div>
           <div className="mb-6">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="password"
-            >
+            <label className="block text-sm font-bold mb-2" htmlFor="password">
               Password
             </label>
             <input
               ref={(el) => (inputRef.current[1] = el)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               id="password"
               type="password"
               placeholder="****************"
@@ -103,7 +97,7 @@ const Login: FC = () => {
               Login
             </button>
             <Link href="/auth/sign-up">
-              <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
+              <a className="inline-block align-baseline font-bold text-sm text-blue-300 hover:text-blue-500">
                 Start Free
               </a>
             </Link>

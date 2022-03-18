@@ -109,15 +109,12 @@ const Index: FC<NewProps> = ({}) => {
           onSubmit={handleSubmit}
         >
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="title"
-            >
+            <label className="block text-sm font-bold mb-2" htmlFor="title">
               Title
             </label>
             <input
               ref={(el) => (inputRef.current[0] = el)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
               id="title"
               type="text"
               placeholder="Title"
@@ -126,14 +123,14 @@ const Index: FC<NewProps> = ({}) => {
           </div>
           <div className="mb-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-sm font-bold mb-2"
               htmlFor="description"
             >
               Description
             </label>
             <input
               ref={(el) => (inputRef.current[1] = el)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
               id="description"
               type="text"
               placeholder="Description"
@@ -141,15 +138,12 @@ const Index: FC<NewProps> = ({}) => {
             />
           </div>
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="webUrl"
-            >
+            <label className="block text-sm font-bold mb-2" htmlFor="webUrl">
               Web Url
             </label>
             <input
               ref={(el) => (inputRef.current[2] = el)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
               id="webUrl"
               type="text"
               placeholder="https://www.rest-hub.com"
@@ -157,15 +151,12 @@ const Index: FC<NewProps> = ({}) => {
             />
           </div>
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="baseUrl"
-            >
+            <label className="block text-sm font-bold mb-2" htmlFor="baseUrl">
               Base Url
             </label>
             <input
               ref={(el) => (inputRef.current[3] = el)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
               id="baseUrl"
               type="text"
               placeholder="/api/v1/..."
@@ -173,16 +164,13 @@ const Index: FC<NewProps> = ({}) => {
             />
           </div>
           <div className="mb-6">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="member"
-            >
+            <label className="block text-sm font-bold mb-2" htmlFor="member">
               Member
             </label>
             <div className="flex flex-row gap-2">
               <input
                 ref={(el) => (inputRef.current[4] = el)}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
                 id="member"
                 type="text"
                 value={memberEmail}
@@ -207,7 +195,7 @@ const Index: FC<NewProps> = ({}) => {
             <span>
               {params.members.map((item) => (
                 <div key={item} className="flex flex-row gap-2 mt-2">
-                  <p className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <p className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
                     {item}
                   </p>
                   <button

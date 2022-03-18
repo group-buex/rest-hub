@@ -25,10 +25,10 @@ const Index: FC<ProjectListProps> = ({}) => {
   return (
     <Layout>
       <div className="flex flex-row w-full justify-between mb-12">
-        <h1 className="text-3xl font-bold text-gray-800">{user.name}</h1>
+        <h1 className="md:text-3xl text-xl font-bold">{user.name}</h1>
         <Link href={`/project/new`}>
-          <a className="py-2.5 px-5 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-            New Rest Hub
+          <a className="py-2.5 px-5 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+            New Hub
           </a>
         </Link>
       </div>
