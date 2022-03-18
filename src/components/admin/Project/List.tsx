@@ -21,7 +21,7 @@ const Index: FC<ListProps> = ({ list, onClickItem }) => {
             <motion.div
               key={item._id}
               role="listitem"
-              className="w-full bg-white cursor-pointer shadow rounded-lg p-8 relative mb-5"
+              className="w-full bg-[#22272e] cursor-pointer shadow rounded-lg px-8 py-4 relative mb-2"
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 20, opacity: 0 }}
@@ -29,14 +29,14 @@ const Index: FC<ListProps> = ({ list, onClickItem }) => {
               onClick={() => onClickItem(item._id)}
             >
               <div className="flex flex-row justify-between">
-                <h2 className="text-2xl font-semibold leading-6 text-gray-800">
+                <h2 className="text-2xl font-semibold leading-6">
                   {item.title}
                 </h2>
                 <p className="text-sm leading-6 text-gray-400">
-                  {format(new Date(item.updatedAt), "dd/MM/yyyy")}
+                  {format(new Date(item.createdAt), "dd/MM/yyyy")}
                 </p>
               </div>
-              <p className="text-base leading-6 mt-4 text-gray-500">
+              <p className="text-base leading-6 mt-3 text-gray-500">
                 {item.description}
               </p>
             </motion.div>

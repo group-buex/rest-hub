@@ -8,7 +8,7 @@ interface HeaderProps {
 
 const Header: FC<HeaderProps> = ({ user = null }) => {
   return (
-    <nav className="flex justify-center w-full pt-3 pb-3 fixed z-10 bg-[#2D333B] top-0 backdrop-blur-2xl shadow">
+    <nav className="flex justify-center w-full pt-3 pb-3 fixed z-10 bg-[#111827] top-0 backdrop-blur-2xl shadow border-b border-gray-500">
       <div className="flex items-center justify-between w-11/12">
         <Link href="/">
           <a className="md:text-4xl text-2xl font-bold text-blue-500">

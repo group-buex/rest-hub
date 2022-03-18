@@ -19,5 +19,5 @@ export interface IUserProject {
   projectId: string;
   title: string;
   description: string;
-  updatedAt: Date;
+  createdAt: Date;
 }
