@@ -1,8 +1,4 @@
-import { useEffect } from "react";
-import { useRecoilCallback, useRecoilValue } from "recoil";
-import IUser from "interface/user";
 import { getUserSelector, userState } from "states/user";
-import { getUser } from "actions/user";
 import useGetRecoilValueLoadable from "hooks/useGetRecoilValueLoadable";
 
 const AuthProvider = (props) => {
@@ -11,7 +7,7 @@ const AuthProvider = (props) => {
     userState
   );
 
-  return props.children;
+  return state !== "loading" && props.children;
 };
 
 export default AuthProvider;
