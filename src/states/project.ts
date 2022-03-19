@@ -1,3 +1,4 @@
+import { getProjectById } from "actions/project";
 import axios from "axios";
 import { IProjectApi, IProject } from "interface/project";
 import { atom, selectorFamily } from "recoil";
@@ -7,8 +8,8 @@ export const selectedApiGroupState = atom({
   default: { groupList: [], apiList: [] },
 });
 
-export const projectApiState = atom({
-  key: "project/projectApiState",
+export const projectState = atom({
+  key: "project/projectState",
   default: null,
 });
 
@@ -26,21 +27,13 @@ export const getProjectListSelector = selectorFamily<IProject[], undefined>({
     },
 });
 
-type GetApiListByProjectIdSelectorProps = {
-  admin: string;
-  id: string;
-};
-
-export const getApiListByProjectIdSelector = selectorFamily<
-  IProjectApi,
-  GetApiListByProjectIdSelectorProps
->({
-  key: "project/getApiListByProjectIdSelector",
+export const getProjectByIdSelector = selectorFamily<IProjectApi, string>({
+  key: "project/getProjectByIdSelector",
   get:
-    ({ admin, id }: GetApiListByProjectIdSelectorProps) =>
+    (id: string) =>
     async ({ get }) => {
       try {
-        const { data } = await axios.get(`/api/v1/project/${admin}/${id}`);
+        const { data } = await getProjectById(id);
         return data;
       } catch (error) {
         throw error;

@@ -24,34 +24,18 @@ export const checkAuth = async (
 ) => {
   try {
     const token = await verifyJwt(req, res);
+    if (token) {
+      // TODO: findOneAndUdpate
+      await Users.findOne({ refreshToken: token }).exec(
+        async (err: Object, user: IUser) => {
+          if (!user) {
+            return res.status(500).json({
+              msg: "Can not find User",
+            });
+          }
 
-    // TODO: findOneAndUdpate
-    await Users.findOne({ refreshToken: token }).exec(
-      async (err: Object, user: IUser) => {
-        if (!user) {
-          return res.status(500).json({
-            msg: "Can not find User",
-          });
-        }
-
-        const {
-          _id,
-          name,
-          email,
-          type,
-          accessToken,
-          refreshToken,
-          project,
-          shared,
-          seq,
-          createdAt,
-          updatedAt,
-        } = user;
-
-        return res.status(200).json(
-          Object.assign({
+          const {
             _id,
-            seq,
             name,
             email,
             type,
@@ -59,12 +43,29 @@ export const checkAuth = async (
             refreshToken,
             project,
             shared,
+            seq,
             createdAt,
             updatedAt,
-          }) as IUser
-        );
-      }
-    );
+          } = user;
+
+          return res.status(200).json(
+            Object.assign({
+              _id,
+              seq,
+              name,
+              email,
+              type,
+              accessToken,
+              refreshToken,
+              project,
+              shared,
+              createdAt,
+              updatedAt,
+            }) as IUser
+          );
+        }
+      );
+    }
   } catch (error) {
     return res.status(500).json({
       msg: error.message,

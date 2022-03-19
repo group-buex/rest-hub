@@ -6,7 +6,9 @@ export const getUser = async (userSession: string) => {
   try {
     if (!userSession) return { _id: null };
     axios.defaults.headers.common["authorization"] = "Bearer " + userSession;
-    const { data } = await axios.get("/api/v1/user/check-auth");
+    const { data } = await axios.get(
+      "http://localhost:3001/api/v1/user/check-auth"
+    );
     return data;
   } catch (error) {
     axios.defaults.headers.common["authorization"];

@@ -1,34 +1,29 @@
-import useGetRecoilState from "hooks/useGetRecoilValueLoadable";
-import { IProjectApi } from "interface/project";
-import React, { FC, useEffect } from "react";
-import { useRecoilState } from "recoil";
-import { getApiListByProjectIdSelector, projectApiState } from "states/project";
+import Layout from "components/Core/Layout";
+import useGetRecoilValueLoadable from "hooks/useGetRecoilValueLoadable";
+import React, { FC } from "react";
+import { getProjectByIdSelector, projectState } from "states/project";
 import DetailList from "./List";
 
 interface DetailProps {
-  admin: string;
   id: string;
 }
 
-const Index: FC<DetailProps> = ({ admin, id }) => {
-  const [projectApiList, setProjectApiList] = useRecoilState(projectApiState);
-
-  const { contents, state } = useGetRecoilState<IProjectApi>(
-    getApiListByProjectIdSelector({ admin, id })
+const Index: FC<DetailProps> = ({ id }) => {
+  const { state, stateData } = useGetRecoilValueLoadable(
+    getProjectByIdSelector(id),
+    projectState
   );
 
-  useEffect(() => {
-    state === "hasValue" && setProjectApiList(contents);
-  }, []);
-
   return (
-    <div className="">
-      {state !== "hasValue" ? (
-        <span>Loading...</span>
-      ) : (
-        projectApiList && <DetailList {...projectApiList} />
-      )}
-    </div>
+    <Layout title={stateData?.title}>
+      <div className="">
+        {state !== "hasValue" ? (
+          <span>Loading...</span>
+        ) : (
+          stateData && <DetailList {...stateData} />
+        )}
+      </div>
+    </Layout>
   );
 };
 

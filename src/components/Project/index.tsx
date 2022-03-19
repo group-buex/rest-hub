@@ -8,8 +8,6 @@ import IUser from "interface/user";
 import { userState } from "states/user";
 import ProjectNoneContents from "components/NoneContents/Project";
 import Layout from "components/Core/Layout";
-import useGetRecoilValueLoadable from "hooks/useGetRecoilValueLoadable";
-import { getProjectListSelector } from "states/project";
 
 interface ProjectListProps {}
 
@@ -19,7 +17,7 @@ const Index: FC<ProjectListProps> = ({}) => {
   const user = useRecoilValue<IUser>(userState);
 
   const handleClickItem = async (id: string) => {
-    router.push(`/${user._id}/${id}`);
+    router.push(`/project/${id}`);
   };
 
   return (

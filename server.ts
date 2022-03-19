@@ -7,7 +7,7 @@ const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-app.prepare().then(() => {
+app.prepare().then(async () => {
   const CONSTANTS = {
     MONGO_USER: process.env.NEXT_PUBLIC_MONGO_USER,
     MONGO_PWD: process.env.NEXT_PUBLIC_MONGO_PWD,
@@ -23,7 +23,7 @@ app.prepare().then(() => {
 
   mongoose.connect(
     `mongodb+srv://${MONGO_USER}:${MONGO_PWD}@cluster0.3y1ae.mongodb.net/${MONGO_DBNAME}?retryWrites=true&w=majority`,
-    { keepAlive: true, keepAliveInitialDelay: 300000 }
+    { keepAlive: true, keepAliveInitialDelay: 300000, useNewUrlParser: true }
   );
 
   mongoose.connection.on("connected", () => {

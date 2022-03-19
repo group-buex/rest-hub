@@ -19,4 +19,6 @@ export const getServerSideProps: GetServerSideProps<{
   };
 };
 
+// export default Index
+
 export default withAuth(Index)(true);

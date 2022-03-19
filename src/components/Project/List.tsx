@@ -26,7 +26,7 @@ const Index: FC<ListProps> = ({ list, onClickItem }) => {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 20, opacity: 0 }}
               transition={{ duration: initDelay(index) }}
-              onClick={() => onClickItem(item._id)}
+              onClick={() => onClickItem(item.projectId)}
             >
               <div className="flex flex-row justify-between">
                 <h2 className="text-2xl font-semibold leading-6">

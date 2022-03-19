@@ -79,10 +79,15 @@ export const decodeJwt = async (token: string) => {
 
 export const extractAccessToken = (req: NextApiRequest) => {
   if (
-    req.headers.authorization &&
-    req.headers.authorization.toString().split(" ")[0] === "Bearer"
+    (req.headers &&
+      req.headers?.authorization &&
+      req.headers?.authorization?.toString().split(" ")[0] === "Bearer") ||
+    req.cookies?.user_session
   ) {
-    return req.headers.authorization.toString().split(" ")[1];
+    return (
+      req.headers.authorization.toString().split(" ")[1] ||
+      req.cookies.user_session
+    );
   }
 };
 

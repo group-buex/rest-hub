@@ -1,12 +1,14 @@
 import type { NextPage } from "next";
 import { GetServerSideProps } from "next";
+import ProjectDetail from "components/Project/Detail";
+import withAuth from "hoc/withAuth";
 
 interface ProjectItemProps {
   id: string;
 }
 
 const Index: NextPage<ProjectItemProps> = ({ id }) => {
-  return <div>Index</div>;
+  return <ProjectDetail id={id} />;
 };
 
 export const getServerSideProps: GetServerSideProps<{
@@ -20,4 +22,4 @@ export const getServerSideProps: GetServerSideProps<{
   };
 };
 
-export default Index;
+export default withAuth(Index)(true);
