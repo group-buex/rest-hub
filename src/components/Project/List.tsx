@@ -15,8 +15,8 @@ const Index: FC<ListProps> = ({ list, onClickItem }) => {
 
   return (
     <>
-      {list.length > 0 &&
-        list.map((item: IUserProject, index: number) => {
+      {list?.length > 0 &&
+        list?.map((item: IUserProject, index: number) => {
           return (
             <motion.div
               key={item._id}
