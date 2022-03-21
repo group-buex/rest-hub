@@ -11,14 +11,32 @@ const variants = {
   },
 };
 
-export const Navigation = ({ user }) => (
-  <>
-    <motion.ul variants={variants} className="w-[240px] z-10 pl-6">
-      {user?.project?.map((item) => (
+const subTitleVariants = {
+  open: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      y: { stiffness: 1000, velocity: -100 },
+    },
+  },
+  closed: {
+    y: 10,
+    opacity: 0,
+    transition: {
+      y: { stiffness: 1000 },
+    },
+  },
+};
+
+export const Navigation = ({ list, subTitle }) => (
+  <div className="mb-6">
+    <motion.div variants={subTitleVariants} className="z-10 pl-4 mb-2">
+      {subTitle}
+    </motion.div>
+    <motion.ul variants={variants} className="w-[240px] z-10">
+      {list?.map((item) => (
         <MenuItem item={item} key={item._id} />
       ))}
     </motion.ul>
-  </>
+  </div>
 );
-
-const itemIds = [0, 1, 2, 3, 4];

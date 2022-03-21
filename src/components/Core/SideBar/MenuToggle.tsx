@@ -5,7 +5,7 @@ const Path = (props) => (
   <motion.path
     fill="transparent"
     strokeWidth="3"
-    stroke="hsl(0, 0%, 18%)"
+    stroke="#c7cfda"
     strokeLinecap="round"
     {...props}
   />
@@ -14,7 +14,7 @@ const Path = (props) => (
 export const MenuToggle = ({ toggle }) => (
   <button
     onClick={toggle}
-    className="flex justify-center items-center absolute top-[57px] z-10 w-[50px] h-[50px] rounded"
+    className="flex justify-center items-center absolute md:top-[67px] top-[57px] z-10 w-[50px] h-[50px] rounded"
   >
     <svg width="23" height="23" viewBox="0 0 23 23">
       <Path

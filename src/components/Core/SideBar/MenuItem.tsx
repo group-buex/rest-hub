@@ -19,16 +19,35 @@ const variants = {
   },
 };
 
+const IconSend = () => {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M4.01 6.03L11.52 9.25L4 8.25L4.01 6.03ZM11.51 14.75L4 17.97V15.75L11.51 14.75ZM2.01 3L2 10L17 12L2 14L2.01 21L23 12L2.01 3Z"
+        fill="#c7cfda"
+      />
+    </svg>
+  );
+};
+
 export const MenuItem = ({ item }) => {
   return (
     <Link href={`/project/${item.projectId}`} passHref>
       <motion.li
         variants={variants}
-        whileHover={{ scale: 1.05 }}
+        whileHover={{ scale: 1.05, backgroundColor: "#FFF", color: "black" }}
         whileTap={{ scale: 0.95 }}
-        className="cursor-pointer"
+        className="cursor-pointer px-4 py-1 rounded"
       >
-        <a>{item.title}</a>
+        <a className="flex items-center gap-3">
+          <IconSend /> {item.title}
+        </a>
       </motion.li>
     </Link>
   );

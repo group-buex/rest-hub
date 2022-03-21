@@ -33,23 +33,6 @@ const sidebarVariants = {
   },
 };
 
-const subTitleVariants = {
-  open: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      y: { stiffness: 1000, velocity: -100 },
-    },
-  },
-  closed: {
-    y: 10,
-    opacity: 0,
-    transition: {
-      y: { stiffness: 1000 },
-    },
-  },
-};
-
 const SideBar: FC<SideBarProps> = ({ user }) => {
   const [isOpen, toggleOpen] = useCycle(false, true);
   const containerRef = useRef(null);
@@ -63,18 +46,12 @@ const SideBar: FC<SideBarProps> = ({ user }) => {
       ref={containerRef}
     >
       <motion.div
-        className="absolute top-[57px] bottom-0 z-10 w-[240px] bg-[#1E2A3B]"
+        className="absolute md:top-[67px] top-[57px] bottom-0 z-10 w-[240px] bg-[#1E2A3B]"
         variants={sidebarVariants}
       >
         <div className="mt-12">
-          <motion.div variants={subTitleVariants} className="z-10 pl-[10px]">
-            Poject
-          </motion.div>
-          <Navigation user={user} />
-          <motion.div variants={subTitleVariants} className="z-10 pl-[10px]">
-            Shared
-          </motion.div>
-          <Navigation user={user} />
+          <Navigation list={user?.project} subTitle="Project" />
+          <Navigation list={user?.shared} subTitle="Shared" />
         </div>
       </motion.div>
       <MenuToggle toggle={() => toggleOpen()} />
