@@ -14,7 +14,6 @@ export default interface IProject extends Document {
 }
 
 interface IProjectMember {
-  seq: number;
   userId: string;
   role: string;
 }

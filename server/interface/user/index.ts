@@ -23,6 +23,5 @@ export interface IUserProject {
   role: string;
   projectId: string;
   title: string;
-  description: string;
   createdAt: Date;
 }

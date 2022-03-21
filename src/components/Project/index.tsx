@@ -36,11 +36,11 @@ const Index: FC<ProjectListProps> = ({}) => {
       ) : user.project.length === 0 ? (
         <ProjectNoneContents />
       ) : (
-        <ProjectList list={user?.project} onClickItem={handleClickItem} />
+        <ProjectList
+          list={user?.project?.slice().reverse()}
+          onClickItem={handleClickItem}
+        />
       )}
-      {/* 
-      {user?.project?.length === 0 ? <div>1</div> : <div>2</div>}
-      {user?.shared?.length === 0 ? <div>1</div> : <div>2</div>} */}
     </Layout>
   );
 };

@@ -28,28 +28,24 @@ export const postProject = async (
     try {
       const token: string = (await verifyJwt(req, res)) as string;
       const { userId, userEmail } = await getUserByToken(token);
+
       if (userId) {
         req.body.authorId = userId;
+
         const newProject: IProject = await new Projects(req.body).save();
-        const {
-          _id: projectId,
-          title,
-          description,
-          member,
-          createdAt,
-        } = newProject;
+
+        const { _id: projectId, title, createdAt } = newProject;
 
         if (newProject) {
           // push project for creator
-          await Users.findOneAndUpdate(
-            { email: userEmail },
+          await Users.findByIdAndUpdate(
+            { _id: userId },
             {
               $push: {
                 project: {
                   projectId,
                   role: "owner",
                   title,
-                  description,
                   createdAt,
                 },
               },
@@ -59,8 +55,8 @@ export const postProject = async (
 
           // push shared for members
           // (length === 1) is only have author alone
-          if (req.body.member.length > 1) {
-            await req.body.member.forEach(async (member) => {
+          if (req.body.member?.length > 1) {
+            await req.body.member?.forEach(async (member) => {
               if (member.email !== userEmail) {
                 await Users.findOneAndUpdate(
                   { email: member.email },
@@ -72,7 +68,6 @@ export const postProject = async (
                         projectId,
                         role: member.role,
                         title,
-                        description,
                         createdAt,
                       },
                     },
@@ -121,7 +116,7 @@ export const getProjectById = async (
 
       if (userId) {
         await Users.findById({ _id: userId })
-          .select("project")
+          .select(["project", "shared"])
           .exec(async (err: Object, user: IUser) => {
             if (!user) {
               return res.status(500).json({
@@ -129,11 +124,14 @@ export const getProjectById = async (
               });
             }
 
-            const hasProject = user.project.some(
+            const hasProject = user.project?.some(
               (project: IUserProject) => project.projectId === req.query.id
             );
+            const hasShared = user.shared?.some(
+              (shared: IUserProject) => shared.projectId === req.query.id
+            );
 
-            if (hasProject) {
+            if (hasProject || hasShared) {
               await Projects.findById({ _id: req.query.id }).exec(
                 async (err: Object, project: IProject) => {
                   if (!project) {

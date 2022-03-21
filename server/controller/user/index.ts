@@ -48,21 +48,20 @@ export const checkAuth = async (
             updatedAt,
           } = user;
 
-          return res.status(200).json(
-            Object.assign({
-              _id,
-              seq,
-              name,
-              email,
-              type,
-              accessToken,
-              refreshToken,
-              project,
-              shared,
-              createdAt,
-              updatedAt,
-            }) as IUser
-          );
+          const result = Object.assign({
+            _id,
+            seq,
+            name,
+            email,
+            type,
+            accessToken,
+            refreshToken,
+            project,
+            shared,
+            createdAt,
+            updatedAt,
+          }) as IUser;
+          return res.status(200).json(result);
         }
       );
     }

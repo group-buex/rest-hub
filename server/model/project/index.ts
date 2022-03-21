@@ -14,17 +14,17 @@ const ProjectSchema: Schema<IProject> = new Schema(
     webUrl: { type: String, required: true, maxlength: 256 },
     member: [
       {
-        seq: { type: Number, require: true },
+        seq: { type: Number },
         email: { type: String, maxlength: 128 },
         role: { type: String, maxlength: 8, default: "guest" },
       },
     ],
     api: {
-      seq: { type: Number, required: true },
-      order: { type: Number, required: true },
-      projectId: { type: String, required: true },
-      title: { type: String, required: true, maxlength: 256 },
-      description: { type: String, required: true, maxlength: 512 },
+      seq: { type: Number },
+      order: { type: Number },
+      projectId: { type: String },
+      title: { type: String, maxlength: 256 },
+      description: { type: String, maxlength: 512 },
       list: [
         {
           seq: { type: Number, required: true },
@@ -57,10 +57,10 @@ const ProjectSchema: Schema<IProject> = new Schema(
       ],
       models: [
         {
-          seq: { type: Number, required: true },
-          order: { type: Number, required: true },
-          name: { type: String, required: true, maxlength: 128 },
-          model: { type: Object, required: true },
+          seq: { type: Number },
+          order: { type: Number },
+          name: { type: String, maxlength: 128 },
+          model: { type: Object },
         },
       ],
     },

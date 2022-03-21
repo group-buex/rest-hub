@@ -1,14 +1,16 @@
-import React, { FC, useCallback, useState, useRef } from "react";
+import React, { FC, useCallback, useState, useRef, useEffect } from "react";
 import { usePostProject } from "actions/project";
 import { isEmpty } from "lib/helper";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import Layout from "components/Core/Layout";
-
-import IconAdd from "/assets/add.svg";
 import IconClear from "/assets/clear.svg";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { userState } from "states/user";
+import IUser from "interface/user";
+import { Item } from "framer-motion/types/components/Reorder/Item";
+import RoleMenu from "./RoleMenu";
+import { projectState } from "states/project";
 
 interface NewProps {}
 
@@ -19,27 +21,45 @@ type PramasProps = {
   description: string;
   baseUrl: string;
   webUrl: string;
-  members: string[];
+  member: { email: string; role: string }[];
 };
 
 const Index: FC<NewProps> = ({}) => {
   const router = useRouter();
   const inputRef = useRef<any>([]);
 
-  const user = useRecoilValue(userState);
+  const user = useRecoilValue<IUser>(userState);
+  const resetUser = useResetRecoilState(userState);
   const [postProject, { loading, data, error }]: any = usePostProject(true);
 
-  const [memberEmail, setMemberEmail] = useState<string>("");
-  const [params, setParams] = useState<PramasProps>({
-    title: null,
-    description: null,
-    baseUrl: null,
-    webUrl: null,
-    members: [],
+  const [newMember, setNewMember] = useState<{ email: string; role: string }>({
+    email: "",
+    role: "",
   });
 
-  const handleMemberEmailChange = (e) => {
-    setMemberEmail(e.target.value);
+  const [params, setParams] = useState<PramasProps>({
+    title: "",
+    description: "",
+    baseUrl: "",
+    webUrl: "",
+    member: [{ email: "", role: "" }],
+  });
+
+  useEffect(() => {
+    user &&
+      setParams({
+        ...params,
+        member: [
+          {
+            email: user?.email,
+            role: "owner",
+          },
+        ],
+      });
+  }, [user]);
+
+  const handleMemberChange = (e) => {
+    setNewMember({ ...newMember, [e.target.id]: e.target.value });
   };
 
   const handleInputChange = useCallback(
@@ -54,29 +74,42 @@ const Index: FC<NewProps> = ({}) => {
   );
 
   const handleClickAddMember = () => {
-    if (isEmpty(memberEmail)) {
+    if (isEmpty(newMember)) {
       inputRef.current[4].focus();
       return toast.error("Enter a new Member");
     }
-    if (params.members.includes(memberEmail)) {
+    const hasEmail = params.member.some(
+      (item) => item.email === newMember.email
+    );
+
+    if (hasEmail) {
       inputRef.current[4].select();
       inputRef.current[4].focus();
       return toast.error("Member already exists");
     }
     // TODO: Validation
-    setMemberEmail("");
-    setParams({ ...params, members: [...params.members, memberEmail] });
-  };
-
-  const handleClickRemoveMember = (member: string) => {
     setParams({
       ...params,
-      members: [...params.members.filter((item: string) => item !== member)],
+      member: [...params.member, { ...newMember }],
+    });
+    setNewMember({ email: "", role: "" });
+  };
+
+  const handleClickRemoveMember = (email: string) => {
+    setParams({
+      ...params,
+      member: [
+        ...params.member.filter(
+          (item: { email: string; role: string }) => item.email !== email
+        ),
+      ],
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (e.target.id === "add-member") return;
     const { title, description, baseUrl, webUrl } = params;
     const [titleRef, descRef, baseUrlRef, webUrlRef] = inputRef.current;
 
@@ -97,8 +130,6 @@ const Index: FC<NewProps> = ({}) => {
       return toast.error("Web Url is empty");
     }
 
-    params.name = title;
-
     const { status, data } = await postProject(params);
     if (data) {
       router.push("/project");
@@ -106,7 +137,7 @@ const Index: FC<NewProps> = ({}) => {
   };
 
   return (
-    <Layout>
+    <Layout title="New Project" loading={loading}>
       <div className="flex flex-col w-full border rounded">
         <form
           className="shadow-md rounded px-8 pt-6 pb-8 mb-4"
@@ -175,45 +206,68 @@ const Index: FC<NewProps> = ({}) => {
               <input
                 ref={(el) => (inputRef.current[4] = el)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                id="member"
-                type="text"
-                value={memberEmail}
+                id="email"
+                type="email"
+                value={newMember.email}
                 placeholder="member@domain"
-                autoComplete="member"
                 onKeyPress={(e) => {
                   if (e.code === "Enter") {
                     handleClickAddMember();
                   }
                 }}
-                onChange={handleMemberEmailChange}
+                onChange={handleMemberChange}
               />
               <button
+                id="add-member"
                 type="button"
                 className="flex items-center justify-center w-[38px] shadow appearance-none border rounded"
                 onClick={handleClickAddMember}
               >
-                <IconAdd />
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                    fill="#e5e7eb"
+                  />
+                </svg>
               </button>
             </div>
 
             <span>
-              <div className="flex flex-row gap-2 mt-2">
-                <p className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
-                  {user.email}
-                </p>
-              </div>
-              {params.members.map((item) => (
-                <div key={item} className="flex flex-row gap-2 mt-2">
+              {params.member.map((item: { email: string; role: string }) => (
+                <div key={item.email} className="flex flex-row gap-2 mt-2">
+                  {item.email !== user.email && (
+                    <RoleMenu onChange={handleMemberChange} />
+                  )}
                   <p className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
-                    {item}
+                    {item.email}
                   </p>
-                  <button
-                    type="button"
-                    className="flex items-center justify-center w-[38px] shadow appearance-none border rounded"
-                    onClick={() => handleClickRemoveMember(item)}
-                  >
-                    <IconClear className="" />
-                  </button>
+
+                  {item.email !== user.email && (
+                    <button
+                      type="button"
+                      className="flex items-center justify-center w-[38px] shadow appearance-none border rounded"
+                      onClick={() => handleClickRemoveMember(item.email)}
+                    >
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
+                          fill="#e5e7eb"
+                        />
+                      </svg>
+                    </button>
+                  )}
                 </div>
               ))}
             </span>

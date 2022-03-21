@@ -1,6 +1,7 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { MenuItem } from "./MenuItem";
+import Link from "next/link";
 
 const variants = {
   open: {
@@ -30,8 +31,29 @@ const subTitleVariants = {
 
 export const Navigation = ({ list, subTitle, onClickItem }) => (
   <div className="mb-6">
-    <motion.div variants={subTitleVariants} className="z-10 pl-4 mb-2">
-      {subTitle}
+    <motion.div
+      variants={subTitleVariants}
+      className="flex flex-row justify-between z-10 px-4 mb-2"
+    >
+      <p>{subTitle}</p>
+      {subTitle.toLowerCase() === "project" && (
+        <Link href="/project/new">
+          <a>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                fill="#e5e7eb"
+              />
+            </svg>
+          </a>
+        </Link>
+      )}
     </motion.div>
     <motion.ul variants={variants} className="w-[240px] z-10">
       {list?.map((item) => (

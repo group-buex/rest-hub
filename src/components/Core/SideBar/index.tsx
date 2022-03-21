@@ -57,13 +57,16 @@ const SideBar: FC<SideBarProps> = ({ user }) => {
         variants={sidebarVariants}
       >
         <div className="mt-12">
+          {user.project.length > 0 && (
+            <Navigation
+              list={user?.project?.slice().reverse()}
+              subTitle="Project"
+              onClickItem={handleClickItem}
+            />
+          )}
+
           <Navigation
-            list={user?.project}
-            subTitle="Project"
-            onClickItem={handleClickItem}
-          />
-          <Navigation
-            list={user?.shared}
+            list={user?.shared?.slice().reverse()}
             subTitle="Shared"
             onClickItem={handleClickItem}
           />

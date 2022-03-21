@@ -45,7 +45,11 @@ export const MenuItem: FC<MenuItemProps> = ({ item, onClickItem }) => {
   return (
     <motion.li
       variants={variants}
-      whileHover={{ scale: 1.05, backgroundColor: "#FFF", color: "black" }}
+      whileHover={{
+        scale: 1.05,
+        backgroundColor: "#FFF",
+        color: "#232323",
+      }}
       whileTap={{ scale: 0.95 }}
       className="cursor-pointer px-4 py-1 rounded"
       onClick={() => onClickItem(item.projectId)}
