@@ -7,6 +7,8 @@ import Layout from "components/Core/Layout";
 
 import IconAdd from "/assets/add.svg";
 import IconClear from "/assets/clear.svg";
+import { useRecoilValue } from "recoil";
+import { userState } from "states/user";
 
 interface NewProps {}
 
@@ -23,6 +25,8 @@ type PramasProps = {
 const Index: FC<NewProps> = ({}) => {
   const router = useRouter();
   const inputRef = useRef<any>([]);
+
+  const user = useRecoilValue(userState);
   const [postProject, { loading, data, error }]: any = usePostProject(true);
 
   const [memberEmail, setMemberEmail] = useState<string>("");
@@ -78,19 +82,19 @@ const Index: FC<NewProps> = ({}) => {
 
     if (isEmpty(title)) {
       titleRef.focus();
-      return toast.error("Title field is empty");
+      return toast.error("Title is empty");
     }
     if (isEmpty(description)) {
       descRef.focus();
-      return toast.error("Description field is empty");
+      return toast.error("Description is empty");
     }
     if (isEmpty(baseUrl)) {
       baseUrlRef.focus();
-      return toast.error("Base Url field is empty");
+      return toast.error("Base Url is empty");
     }
     if (isEmpty(webUrl)) {
       webUrlRef.focus();
-      return toast.error("Web Url field is empty");
+      return toast.error("Web Url is empty");
     }
 
     params.name = title;
@@ -103,9 +107,9 @@ const Index: FC<NewProps> = ({}) => {
 
   return (
     <Layout>
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full border rounded">
         <form
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+          className="shadow-md rounded px-8 pt-6 pb-8 mb-4"
           onSubmit={handleSubmit}
         >
           <div className="mb-4">
@@ -117,7 +121,7 @@ const Index: FC<NewProps> = ({}) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
               id="title"
               type="text"
-              placeholder="Title"
+              placeholder="title"
               onChange={handleInputChange}
             />
           </div>
@@ -133,7 +137,7 @@ const Index: FC<NewProps> = ({}) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
               id="description"
               type="text"
-              placeholder="Description"
+              placeholder="description"
               onChange={handleInputChange}
             />
           </div>
@@ -146,7 +150,7 @@ const Index: FC<NewProps> = ({}) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
               id="webUrl"
               type="text"
-              placeholder="https://www.rest-hub.com"
+              placeholder="your domain"
               onChange={handleInputChange}
             />
           </div>
@@ -159,7 +163,7 @@ const Index: FC<NewProps> = ({}) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
               id="baseUrl"
               type="text"
-              placeholder="/api/v1/..."
+              placeholder="ex: /api/v1/"
               onChange={handleInputChange}
             />
           </div>
@@ -185,7 +189,7 @@ const Index: FC<NewProps> = ({}) => {
               />
               <button
                 type="button"
-                className="flex items-center justify-center w-[36px] shadow appearance-none border rounded"
+                className="flex items-center justify-center w-[38px] shadow appearance-none border rounded"
                 onClick={handleClickAddMember}
               >
                 <IconAdd />
@@ -193,6 +197,11 @@ const Index: FC<NewProps> = ({}) => {
             </div>
 
             <span>
+              <div className="flex flex-row gap-2 mt-2">
+                <p className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
+                  {user.email}
+                </p>
+              </div>
               {params.members.map((item) => (
                 <div key={item} className="flex flex-row gap-2 mt-2">
                   <p className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
@@ -200,10 +209,10 @@ const Index: FC<NewProps> = ({}) => {
                   </p>
                   <button
                     type="button"
-                    className="flex items-center justify-center w-[36px] shadow appearance-none border rounded"
+                    className="flex items-center justify-center w-[38px] shadow appearance-none border rounded"
                     onClick={() => handleClickRemoveMember(item)}
                   >
-                    <IconClear />
+                    <IconClear className="" />
                   </button>
                 </div>
               ))}

@@ -16,13 +16,11 @@ const Index: FC<DetailProps> = ({ id }) => {
 
   return (
     <Layout title={stateData?.title}>
-      <div className="">
-        {state !== "hasValue" ? (
-          <span>Loading...</span>
-        ) : (
-          stateData && <DetailList {...stateData} />
-        )}
-      </div>
+      {state !== "hasValue" ? (
+        <span>Loading...</span>
+      ) : (
+        stateData && <DetailList {...stateData} />
+      )}
     </Layout>
   );
 };

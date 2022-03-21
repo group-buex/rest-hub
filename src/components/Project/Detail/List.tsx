@@ -1,19 +1,28 @@
 import React, { FC } from "react";
-import ApiGroup from "./Api/Group";
 import { IProject } from "interface/project";
-import { IApi } from "interface/api";
+import Link from "next/link";
 
 const DetailList: FC<IProject> = (props) => {
-  const { title, description } = props;
+  const { title, description, baseUrl, webUrl } = props;
   return (
-    <>
-      <div className="flex flex-col w-full justify-between mb-12">
-        <h1 className="text-3xl font-bold text-gray-800">{title}</h1>
-        <p className="text-base leading-6 mt-4 text-gray-500">{description}</p>
+    <div className="flex w-full">
+      <div className="flex flex-col justify-between w-full  mb-12">
+        <h1 className="text-3xl font-bold mb-3 tracking-wide">{title}</h1>
+        <p className="text-sm leading-6 md:mt-2 mt-1 text-gray-400 tracking-wide">
+          {description}
+        </p>
+        <p className="text-sm leading-6 mt-1 text-gray-400 tracking-widestst">
+          Base : [ {baseUrl} ]
+        </p>
+        <Link href={webUrl}>
+          <a className="text-sm leading-6 mt-1 text-gray-400 tracking-wide">
+            {webUrl}
+          </a>
+        </Link>
       </div>
-      {/* 
-      <ApiGroup /> */}
-    </>
+
+      {/* <ApiGroup /> */}
+    </div>
   );
 };
 

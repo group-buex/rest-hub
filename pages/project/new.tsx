@@ -1,12 +1,12 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
 import New from "components/Project/New";
+import withAuth from "hoc/withAuth";
 
 interface NewProjectProps {}
 
 const NewProject: NextPage<NewProjectProps> = ({}) => {
-  // return <New />;
-  return <div>null</div>;
+  return <New />;
 };
 
 export const getServerSideProps: GetServerSideProps<{
@@ -19,4 +19,4 @@ export const getServerSideProps: GetServerSideProps<{
   };
 };
 
-export default NewProject;
+export default withAuth(NewProject)();

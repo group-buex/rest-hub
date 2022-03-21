@@ -6,7 +6,7 @@ export const getProjectById = async (id: string) => {
 };
 
 export const postProject = async (params) => {
-  return await axios.post("/api/v1/project", params);
+  return await axios.post("/api/v1/project/new", params);
 };
 
 export const usePostProject = (useToast: boolean = false) =>
