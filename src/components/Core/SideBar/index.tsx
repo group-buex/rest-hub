@@ -8,6 +8,7 @@ import IconArrowDown from "/assets/keyboard_arrow_down.svg";
 import { useDimensions } from "hooks/useDimensions";
 import { MenuToggle } from "./MenuToggle";
 import { Navigation } from "./Navigation";
+import { useRouter } from "next/router";
 
 interface SideBarProps {
   user: IUser;
@@ -34,9 +35,15 @@ const sidebarVariants = {
 };
 
 const SideBar: FC<SideBarProps> = ({ user }) => {
-  const [isOpen, toggleOpen] = useCycle(false, true);
+  const router = useRouter();
+  const [isOpen, toggleOpen] = useCycle<boolean>(false, true);
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
+
+  const handleClickItem = (id: string) => {
+    toggleOpen();
+    router.push(`/project/${id}`);
+  };
 
   return (
     <motion.nav
@@ -50,8 +57,16 @@ const SideBar: FC<SideBarProps> = ({ user }) => {
         variants={sidebarVariants}
       >
         <div className="mt-12">
-          <Navigation list={user?.project} subTitle="Project" />
-          <Navigation list={user?.shared} subTitle="Shared" />
+          <Navigation
+            list={user?.project}
+            subTitle="Project"
+            onClickItem={handleClickItem}
+          />
+          <Navigation
+            list={user?.shared}
+            subTitle="Shared"
+            onClickItem={handleClickItem}
+          />
         </div>
       </motion.div>
       <MenuToggle toggle={() => toggleOpen()} />

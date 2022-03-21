@@ -28,14 +28,14 @@ const subTitleVariants = {
   },
 };
 
-export const Navigation = ({ list, subTitle }) => (
+export const Navigation = ({ list, subTitle, onClickItem }) => (
   <div className="mb-6">
     <motion.div variants={subTitleVariants} className="z-10 pl-4 mb-2">
       {subTitle}
     </motion.div>
     <motion.ul variants={variants} className="w-[240px] z-10">
       {list?.map((item) => (
-        <MenuItem item={item} key={item._id} />
+        <MenuItem item={item} key={item._id} onClickItem={onClickItem} />
       ))}
     </motion.ul>
   </div>

@@ -1,6 +1,11 @@
-import * as React from "react";
+import { FC } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
+import { IProjectApi } from "interface/project";
+
+interface MenuItemProps {
+  item: IProjectApi;
+  onClickItem: (id: string) => void;
+}
 
 const variants = {
   open: {
@@ -36,19 +41,18 @@ const IconSend = () => {
   );
 };
 
-export const MenuItem = ({ item }) => {
+export const MenuItem: FC<MenuItemProps> = ({ item, onClickItem }) => {
   return (
-    <Link href={`/project/${item.projectId}`} passHref>
-      <motion.li
-        variants={variants}
-        whileHover={{ scale: 1.05, backgroundColor: "#FFF", color: "black" }}
-        whileTap={{ scale: 0.95 }}
-        className="cursor-pointer px-4 py-1 rounded"
-      >
-        <a className="flex items-center gap-3">
-          <IconSend /> {item.title}
-        </a>
-      </motion.li>
-    </Link>
+    <motion.li
+      variants={variants}
+      whileHover={{ scale: 1.05, backgroundColor: "#FFF", color: "black" }}
+      whileTap={{ scale: 0.95 }}
+      className="cursor-pointer px-4 py-1 rounded"
+      onClick={() => onClickItem(item.projectId)}
+    >
+      <button className="flex items-center gap-3">
+        <IconSend /> {item.title}
+      </button>
+    </motion.li>
   );
 };

@@ -1,64 +1,61 @@
 export interface IProject {
   _id: string;
   seq: number;
-  name: string;
+  authorId: string;
   title: string;
   description: string;
   baseUrl: string;
-  admin: string;
   webUrl: string;
-  members?: IMember[];
+  member?: IProjectMember[];
+  api?: IProjectApi;
   createdAt: Date;
   updatedAt: Date;
 }
 
-interface IMember {
+export interface IProjectMember {
   seq: number;
   userId: string;
   role: string;
 }
 
 export interface IProjectApi {
-  project: {
+  _id: string;
+  seq: number;
+  order: number;
+  projectId: string;
+  title: string;
+  description: string;
+  list: {
     _id: string;
     seq: number;
-    name: string;
-    title: string;
+    order: number;
+    method: string;
+    url: string;
     description: string;
-    baseUrl: string;
-    admin: string;
-    webUrl: string;
-    createdAt: Date;
-    updatedAt: Date;
-  };
-  api: {
-    _id: string;
-    seq: number;
-    projectId: string;
-    title: string;
-    description: string;
-    list: {
-      method: string;
-      url: string;
-      description: string;
-      request: {
-        seq: number;
-        name: string;
-        type: string;
-        description: string;
-      }[];
-      response: {
-        seq: number;
-        code: number;
-        message: string;
-        data: object;
-      }[];
-      mock: object;
-    }[];
-    models: {
+    notice: string;
+    mockData: object;
+    request: {
       seq: number;
+      order: number;
+      isRequired: boolean;
       name: string;
-      model: object;
+      type: string;
+      description: string;
     }[];
+    response: {
+      _id: string;
+      seq: number;
+      order: number;
+      code: number;
+      message: string;
+      data: object;
+    }[];
+  }[];
+  models: {
+    _id: string;
+    seq: number;
+    order: number;
+    name: string;
+    model: object;
   }[];
 }
