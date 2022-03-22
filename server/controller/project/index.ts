@@ -1,7 +1,5 @@
-import { decodeJwt } from "./../../helper/index";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Result, ValidationError, validationResult } from "express-validator";
-import { mongo } from "mongoose";
 
 import IProject from "../../interface/project";
 import IUser, { IUserProject } from "../../interface/user";
@@ -38,7 +36,7 @@ export const postProject = async (
 
         if (newProject) {
           // push project for creator
-          await Users.findByIdAndUpdate(
+          const resetUser = await Users.findByIdAndUpdate(
             { _id: userId },
             {
               $push: {
@@ -78,7 +76,7 @@ export const postProject = async (
             });
           }
 
-          return res.status(200).json(newProject);
+          return res.status(200).json(resetUser);
         }
 
         return res.status(500).json({ msg: "Can not created project" });
@@ -117,10 +115,11 @@ export const getProjectById = async (
       if (userId) {
         await Users.findById({ _id: userId })
           .select(["project", "shared"])
-          .exec(async (err: Object, user: IUser) => {
-            if (!user) {
+          .exec(async (error: Object, user: IUser) => {
+            if (error || !user) {
               return res.status(500).json({
                 msg: "Can not find User",
+                error,
               });
             }
 
@@ -133,10 +132,11 @@ export const getProjectById = async (
 
             if (hasProject || hasShared) {
               await Projects.findById({ _id: req.query.id }).exec(
-                async (err: Object, project: IProject) => {
-                  if (!project) {
+                async (error: Object, project: IProject) => {
+                  if (error || !project) {
                     return res.status(500).json({
                       msg: "Invalid request",
+                      error,
                     });
                   }
 
@@ -148,6 +148,48 @@ export const getProjectById = async (
                 .status(401)
                 .json({ msg: "Do not have authority about project" });
             }
+          });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        msg: error.message,
+        error,
+      });
+    }
+  }
+};
+
+/***
+ * get Project By User
+ * @METHOD `GET`
+ * @PATH `/api/v1/project/list`
+ */
+export const getProjectList = async (
+  req: NextApiRequest,
+  res: NextApiResponse<any | CatchType>
+) => {
+  const errors: Result<ValidationError> = await validationResult(req);
+  if (!errors.isEmpty()) {
+    const firstError: string = await errors.array().map((err) => err.msg)[0];
+    return res.status(422).json({ msg: firstError });
+  } else {
+    try {
+      const token: string = (await verifyJwt(req, res)) as string;
+      const { userId }: { userId: string } = (await getUserByToken(token)) as {
+        userId: string;
+      };
+
+      if (userId) {
+        await Users.findById({ _id: userId })
+          .select(["project", "shared"])
+          .exec(async (error: Object, user: IUser) => {
+            if (error || !user) {
+              return res.status(500).json({
+                msg: "Can not find User",
+                error,
+              });
+            }
+            return res.status(200).json(user);
           });
       }
     } catch (error) {

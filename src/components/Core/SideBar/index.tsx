@@ -1,10 +1,7 @@
 import IUser from "interface/user";
-import React, { FC, useRef, useState } from "react";
-import Link from "next/link";
+import React, { FC, useRef } from "react";
 import { motion, useCycle } from "framer-motion";
 
-// import IconDoubleArrow from "/assets/double_arrow.svg";
-import IconArrowDown from "/assets/keyboard_arrow_down.svg";
 import { useDimensions } from "hooks/useDimensions";
 import { MenuToggle } from "./MenuToggle";
 import { Navigation } from "./Navigation";
@@ -34,6 +31,23 @@ const sidebarVariants = {
   },
 };
 
+const subTitleVariants = {
+  open: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      y: { stiffness: 1000, velocity: -100 },
+    },
+  },
+  closed: {
+    y: 10,
+    opacity: 0,
+    transition: {
+      y: { stiffness: 1000 },
+    },
+  },
+};
+
 const SideBar: FC<SideBarProps> = ({ user }) => {
   const router = useRouter();
   const [isOpen, toggleOpen] = useCycle<boolean>(false, true);
@@ -51,9 +65,10 @@ const SideBar: FC<SideBarProps> = ({ user }) => {
       animate={isOpen ? "open" : "closed"}
       custom={height}
       ref={containerRef}
+      className="flex flex-row"
     >
       <motion.div
-        className="absolute md:top-[67px] top-[57px] bottom-0 z-10 w-[240px] bg-[#1E2A3B]"
+        className="absolute md:top-[67px] top-[57px] bottom-0 z-20 w-[240px] bg-[#1E2A3B]"
         variants={sidebarVariants}
       >
         <div className="mt-12">
@@ -72,6 +87,13 @@ const SideBar: FC<SideBarProps> = ({ user }) => {
           />
         </div>
       </motion.div>
+      {isOpen && (
+        <motion.div
+          variants={subTitleVariants}
+          className="bg-gray-700/30 backdrop-blur-sm w-full absolute md:top-[67px] top-[57px] bottom-0 z-10"
+          onClick={() => toggleOpen()}
+        />
+      )}
       <MenuToggle toggle={() => toggleOpen()} />
     </motion.nav>
   );

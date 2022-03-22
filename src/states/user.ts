@@ -26,4 +26,7 @@ export const getUserSelector = selectorFamily<IUser, string>({
       if (!user_session) return { _id: null };
       return await getUser(user_session);
     },
+  cachePolicy_UNSTABLE: {
+    eviction: "most-recent",
+  },
 });

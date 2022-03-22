@@ -5,7 +5,12 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import Layout from "components/Core/Layout";
 import IconClear from "/assets/clear.svg";
-import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
 import { userState } from "states/user";
 import IUser from "interface/user";
 import { Item } from "framer-motion/types/components/Reorder/Item";
@@ -28,15 +33,13 @@ const Index: FC<NewProps> = ({}) => {
   const router = useRouter();
   const inputRef = useRef<any>([]);
 
-  const user = useRecoilValue<IUser>(userState);
-  const resetUser = useResetRecoilState(userState);
+  const [user, setUser] = useRecoilState<IUser>(userState);
   const [postProject, { loading, data, error }]: any = usePostProject(true);
 
   const [newMember, setNewMember] = useState<{ email: string; role: string }>({
     email: "",
     role: "",
   });
-
   const [params, setParams] = useState<PramasProps>({
     title: "",
     description: "",
@@ -44,6 +47,9 @@ const Index: FC<NewProps> = ({}) => {
     webUrl: "",
     member: [{ email: "", role: "" }],
   });
+
+  const regEmail =
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
   useEffect(() => {
     user &&
@@ -74,9 +80,13 @@ const Index: FC<NewProps> = ({}) => {
   );
 
   const handleClickAddMember = () => {
-    if (isEmpty(newMember)) {
+    if (isEmpty(newMember.email)) {
       inputRef.current[4].focus();
       return toast.error("Enter a new Member");
+    }
+    if (!regEmail.test(newMember.email)) {
+      inputRef.current[4].focus();
+      return toast.error("Invalid Email");
     }
     const hasEmail = params.member.some(
       (item) => item.email === newMember.email
@@ -87,7 +97,7 @@ const Index: FC<NewProps> = ({}) => {
       inputRef.current[4].focus();
       return toast.error("Member already exists");
     }
-    // TODO: Validation
+
     setParams({
       ...params,
       member: [...params.member, { ...newMember }],
@@ -111,7 +121,7 @@ const Index: FC<NewProps> = ({}) => {
 
     if (e.target.id === "add-member") return;
     const { title, description, baseUrl, webUrl } = params;
-    const [titleRef, descRef, baseUrlRef, webUrlRef] = inputRef.current;
+    const [titleRef, descRef, webUrlRef, baseUrlRef] = inputRef.current;
 
     if (isEmpty(title)) {
       titleRef.focus();
@@ -132,6 +142,7 @@ const Index: FC<NewProps> = ({}) => {
 
     const { status, data } = await postProject(params);
     if (data) {
+      setUser(data);
       router.push("/project");
     }
   };
@@ -139,10 +150,7 @@ const Index: FC<NewProps> = ({}) => {
   return (
     <Layout title="New Project" loading={loading}>
       <div className="flex flex-col w-full border rounded">
-        <form
-          className="shadow-md rounded px-8 pt-6 pb-8 mb-4"
-          onSubmit={handleSubmit}
-        >
+        <div className="shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div className="mb-4">
             <label className="block text-sm font-bold mb-2" htmlFor="title">
               Title
@@ -202,7 +210,7 @@ const Index: FC<NewProps> = ({}) => {
             <label className="block text-sm font-bold mb-2" htmlFor="member">
               Member
             </label>
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-row gap-2 mb-6">
               <input
                 ref={(el) => (inputRef.current[4] = el)}
                 className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -278,11 +286,12 @@ const Index: FC<NewProps> = ({}) => {
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               aria-label="submit"
+              onClick={handleSubmit}
             >
               Create
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </Layout>
   );

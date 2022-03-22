@@ -12,7 +12,7 @@ const Header: FC<HeaderProps> = ({ user = null }) => {
       <div className="flex items-center justify-between w-11/12">
         <Link href="/">
           <a className="md:text-4xl text-2xl font-bold text-blue-500">
-            Rest Hub <span className="text-sm"># BETA</span>
+            Rest Hub <span className="text-sm"># Pre-Alpha</span>
           </a>
         </Link>
         {user?._id ? (
