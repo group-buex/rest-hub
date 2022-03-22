@@ -12,7 +12,7 @@ import Layout from "components/Core/Layout";
 const Login: FC = () => {
   const inputRef = useRef<any>([]);
   const [user, setUser] = useRecoilState<IUser>(userState);
-  const [login, { loading, data, error }]: any = useLogin(true);
+  const [login, { loading }]: any = useLogin(true);
 
   const [params, setParams] = useState<{ email: string; password: string }>({
     email: null,
@@ -48,12 +48,11 @@ const Login: FC = () => {
       return toast.error("Password is required");
     }
 
-    const a = await login(params);
-    console.log(a);
-    // if (a.data) {
-    //   await setUser(data);
-    //   router.push(`/project`);
-    // }
+    const { status, data } = await login(params);
+    if (status === 200) {
+      await setUser(data);
+      router.push(`/project`);
+    }
   };
   return (
     <Layout title="Login" loading={loading}>

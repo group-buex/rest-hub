@@ -189,8 +189,8 @@ export const login = async (
       await Users.findOne({ email }).exec(
         async (error: Object, user: IUser) => {
           if (error || !user) {
-            return res.status(500).json({
-              msg: "Can not found user",
+            return res.status(404).json({
+              msg: "User not found",
               error,
             });
           }
@@ -221,8 +221,8 @@ export const login = async (
             { new: true, runValidators: true }
           ).exec(async (err: Object, user: IUser) => {
             if (err || !user) {
-              return res.status(500).json({
-                msg: "Can not found user",
+              return res.status(404).json({
+                msg: "User not found",
               });
             }
 
@@ -288,7 +288,7 @@ export const postUserProject = async (
       }).exec(async (err: Object, user: IUser) => {
         if (err || !user) {
           return res.status(404).json({
-            msg: "Can not found user",
+            msg: "User not found",
           });
         }
         return res.status(200).json(user);

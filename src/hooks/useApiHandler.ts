@@ -1,7 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-type reqState = {
+type RequestState = {
   error: string;
   data: any;
   loading: boolean;
@@ -10,7 +10,7 @@ type reqState = {
 
 // axios post
 export function useApiHandler(apiCall, useToast: boolean) {
-  const [reqState, setReqState] = useState<reqState>({
+  const [reqState, setReqState] = useState<RequestState>({
     error: null,
     data: null,
     loading: false,
@@ -22,7 +22,7 @@ export function useApiHandler(apiCall, useToast: boolean) {
       error: json?.response?.data?.msg ?? null,
       data: json?.data ?? null,
       loading: false,
-      status: json?.status ?? json?.reponse?.status,
+      status: json?.status ?? json?.response?.status,
     });
 
     json?.response?.data?.msg && toast.error(json?.response?.data?.msg);
@@ -31,7 +31,7 @@ export function useApiHandler(apiCall, useToast: boolean) {
       error: json?.response?.data?.msg ?? null,
       data: json?.data ?? null,
       loading: false,
-      status: json?.status ?? json?.reponse?.status,
+      status: json?.status ?? json?.response?.status,
     });
   };
 
