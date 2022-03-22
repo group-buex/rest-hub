@@ -1,4 +1,4 @@
-import { useApiHandler } from "actions";
+import { useApiHandler } from "hooks/useApiHandler";
 import axios from "axios";
 import Cookie from "js-cookie";
 
@@ -13,7 +13,7 @@ export const getUser = async (userSession: string) => {
   } catch (error) {
     axios.defaults.headers.common["authorization"];
     Cookie.remove("user_session");
-    console.error(error);
+    return error;
   }
 };
 
@@ -37,15 +37,24 @@ export const login = async (params) => {
     axios.defaults.headers.common["authorization"];
     Cookie.remove("user_session");
     console.error(error);
+    return error;
   }
 };
 
 export const postUser = async (params) => {
-  return await axios.post(`/api/v1/user/sign-up`, params);
+  try {
+    return await axios.post(`/api/v1/user/sign-up`, params);
+  } catch (error) {
+    return error;
+  }
 };
 
 export const postUserProject = async (params) => {
-  return await axios.post("/api/v1/user/project", params);
+  try {
+    return await axios.post("/api/v1/user/project", params);
+  } catch (error) {
+    return error;
+  }
 };
 
 /**

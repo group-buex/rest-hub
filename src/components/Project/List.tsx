@@ -36,9 +36,6 @@ const Index: FC<ListProps> = ({ list, onClickItem }) => {
                   {format(new Date(item.createdAt), "dd/MM/yyyy")}
                 </p>
               </div>
-              <p className="text-base leading-6 mt-3 text-gray-500">
-                {item.description}
-              </p>
             </motion.div>
           );
         })}

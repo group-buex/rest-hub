@@ -1,15 +1,27 @@
-import { useApiHandler } from "actions";
+import { useApiHandler } from "hooks/useApiHandler";
 import axios from "axios";
 
 export const getProjectList = async () => {
-  return await axios.get(`/api/v1/project/list`);
+  try {
+    return await axios.get(`/api/v1/project/list`);
+  } catch (error) {
+    return error;
+  }
 };
 export const getProjectById = async (id: string) => {
-  return await axios.get(`/api/v1/project/v/${id}`);
+  try {
+    return await axios.get(`/api/v1/project/v/${id}`);
+  } catch (error) {
+    return error;
+  }
 };
 
 export const postProject = async (params) => {
-  return await axios.post("/api/v1/project/new", params);
+  try {
+    return await axios.post("/api/v1/project/new", params);
+  } catch (error) {
+    return error;
+  }
 };
 
 export const usePostProject = (useToast: boolean = false) =>

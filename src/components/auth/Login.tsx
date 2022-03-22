@@ -48,11 +48,12 @@ const Login: FC = () => {
       return toast.error("Password is required");
     }
 
-    const { status, data } = await login(params);
-    if (data) {
-      await setUser(data);
-      router.push(`/project`);
-    }
+    const a = await login(params);
+    console.log(a);
+    // if (a.data) {
+    //   await setUser(data);
+    //   router.push(`/project`);
+    // }
   };
   return (
     <Layout title="Login" loading={loading}>

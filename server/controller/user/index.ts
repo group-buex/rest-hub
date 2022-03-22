@@ -186,58 +186,48 @@ export const login = async (
       }
 
       // check verify
-      await Users.findOne({ email }).exec(async (err: Object, user: IUser) => {
-        if (err || !user) {
-          return res.status(404).json({
-            msg: "Can not found user",
-          });
-        }
-
-        const match = await setDecode(password, user.hash_password, user.salt);
-
-        // check password
-        if (!match) {
-          return res.status(400).json({
-            msg: "Please check you password.",
-          });
-        }
-
-        const accessToken = await generateToken(user);
-        const refreshToken = await generateRefreshToken(user);
-
-        // update refresh token
-        await Users.findByIdAndUpdate(
-          { _id: user._id },
-          {
-            accessToken,
-            refreshToken,
-          },
-          { new: true, runValidators: true }
-        ).exec(async (err: Object, user: IUser) => {
-          if (err || !user) {
-            return res.status(404).json({
+      await Users.findOne({ email }).exec(
+        async (error: Object, user: IUser) => {
+          if (error || !user) {
+            return res.status(500).json({
               msg: "Can not found user",
+              error,
             });
           }
 
-          const {
-            _id,
-            name,
-            email,
-            type,
-            accessToken,
-            refreshToken,
-            project,
-            shared,
-            seq,
-            createdAt,
-            updatedAt,
-          } = user;
+          const match = await setDecode(
+            password,
+            user.hash_password,
+            user.salt
+          );
 
-          return res.status(200).json(
-            Object.assign({
+          // check password
+          if (!match) {
+            return res.status(400).json({
+              msg: "Please check you password.",
+            });
+          }
+
+          const accessToken = await generateToken(user);
+          const refreshToken = await generateRefreshToken(user);
+
+          // update refresh token
+          await Users.findByIdAndUpdate(
+            { _id: user._id },
+            {
+              accessToken,
+              refreshToken,
+            },
+            { new: true, runValidators: true }
+          ).exec(async (err: Object, user: IUser) => {
+            if (err || !user) {
+              return res.status(500).json({
+                msg: "Can not found user",
+              });
+            }
+
+            const {
               _id,
-              seq,
               name,
               email,
               type,
@@ -245,12 +235,29 @@ export const login = async (
               refreshToken,
               project,
               shared,
+              seq,
               createdAt,
               updatedAt,
-            }) as IUser
-          );
-        });
-      });
+            } = user;
+
+            return res.status(200).json(
+              Object.assign({
+                _id,
+                seq,
+                name,
+                email,
+                type,
+                accessToken,
+                refreshToken,
+                project,
+                shared,
+                createdAt,
+                updatedAt,
+              }) as IUser
+            );
+          });
+        }
+      );
     } catch (error) {
       return res.status(500).json({
         msg: error.message,
