@@ -8,17 +8,17 @@ export default interface IProject extends Document {
   baseUrl: string;
   webUrl: string;
   member?: IProjectMember[];
-  api?: IProjectApi;
+  api?: IProjectApi[];
   createdAt: Date;
   updatedAt: Date;
 }
 
-interface IProjectMember {
-  userId: string;
+export interface IProjectMember {
+  email: string;
   role: string;
 }
 
-interface IProjectApi {
+export interface IProjectApi {
   seq: number;
   order: number;
   projectId: string;
@@ -36,6 +36,7 @@ interface IProjectApi {
       seq: number;
       order: number;
       isRequired: boolean;
+      default: string;
       name: string;
       type: string;
       description: string;

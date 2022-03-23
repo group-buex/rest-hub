@@ -7,17 +7,17 @@ import GorupItem from "./Item";
 import { IApi } from "interface/api";
 
 const Index: FC = () => {
-  const [projectList, setProjectApiList] = useRecoilState(projectState);
+  const [project, setProject] = useRecoilState(projectState);
   const [selectedApiGroup, setSelectedApiGroup] = useRecoilState(
     selectedApiGroupState
   );
-  const { api } = projectList;
+  const { api } = project;
 
   const handleDragEnd = (fromIndex, toIndex) => {
     const temp = Object.assign(api).slice();
     const item = temp.splice(fromIndex, 1)[0];
     temp.splice(toIndex, 0, item);
-    setProjectApiList({ ...projectList, api: [...temp] });
+    setProject({ ...project, api: [...temp] });
   };
 
   const handleClickGroup = (item: IApi) => {
@@ -46,7 +46,8 @@ const Index: FC = () => {
       nodeSelector="li"
       handleSelector="a"
     >
-      <GorupItem api={api} onClickGroup={handleClickGroup} />
+      {api}
+      <GorupItem api={api?.list} onClickGroup={handleClickGroup} />
     </ReactDragListView>
   );
 };

@@ -35,7 +35,7 @@ const ApiGroupItem: FC<ApiGroupItemProps> = ({ api, onClickGroup }) => {
 
   return (
     <ol>
-      {api.map((item: IApi, index: number) => (
+      {api?.map((item: IApi, index: number) => (
         <React.Fragment key={item._id}>
           <motion.li
             role="listitem"

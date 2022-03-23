@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Result, ValidationError, validationResult } from "express-validator";
 
-import IProject from "../../interface/project";
+import IProject, { IProjectMember } from "../../interface/project";
 import IUser, { IUserProject } from "../../interface/user";
 import Projects from "../../model/project";
 import Users from "../../model/user";
@@ -12,7 +12,7 @@ import { getUserByToken, verifyJwt } from "../../helper";
 /***
  * Post Add New Project
  * @METHOD `POST`
- * @PATH `/api/v1/project`
+ * @PATH `/api/v1/project/new`
  */
 export const postProject = async (
   req: NextApiRequest,
@@ -93,6 +93,127 @@ export const postProject = async (
 };
 
 /***
+ * Post Add New Project Api
+ * @METHOD `POST`
+ * @PATH `/api/v1/project/api`
+ */
+export const postProjectApi = async (
+  req: NextApiRequest,
+  res: NextApiResponse<IProject | CatchType>
+) => {
+  const errors: Result<ValidationError> = await validationResult(req);
+  if (!errors.isEmpty()) {
+    const firstError: string = await errors.array().map((err) => err.msg)[0];
+    return res.status(422).json({ msg: firstError });
+  } else {
+    try {
+      const token: string = (await verifyJwt(req, res)) as string;
+      const { userId, userEmail } = await getUserByToken(token);
+
+      if (userId) {
+        await Projects.findById({ id: req.body.projectId }).exec(
+          async (error: Object, project: IProject) => {
+            if (error || !project) {
+              return res.status(500).json({
+                msg: "Project not found",
+                error,
+              });
+            }
+
+            const member: IProjectMember = project.member.filter(
+              (item: IProjectMember) => item.email === userEmail
+            )[0];
+
+            if (!member) {
+              return res.status(500).json({
+                msg: "Member not found",
+                error,
+              });
+            }
+
+            if (member.role === "guest") {
+              return res.status(401).json({
+                msg: "Not authorized about project",
+                error,
+              });
+            }
+
+            await Projects.findOneAndUpdate(
+              { id: req.body.projectId },
+              {
+                $push: {
+                  api: {
+                    seq: project.api.length + 1,
+                    order: project.api.length + 1,
+                    projectId: req.body.projectId,
+                    title: req.body.title,
+                    description: req.body.description,
+                    list: [],
+                  },
+                },
+              },
+              { new: true, runValidators: true }
+            ).exec((error: Object, project: IProject) => {
+              if (error || !project) {
+                return res.status(500).json({
+                  msg: "Can not update project",
+                  error,
+                });
+              }
+              return res.status(200).json(project);
+            });
+          }
+        );
+
+        await Users.findById({ _id: userId }).exec(
+          async (error: Object, user: IUser) => {
+            if (error || !user) {
+              return res.status(500).json({
+                msg: "User not found",
+                error,
+              });
+            }
+
+            const hasProject = user.project?.some(
+              (project: IUserProject) => project.projectId === req.query.id
+            );
+            const hasShared = user.shared?.some(
+              (shared: IUserProject) => shared.projectId === req.query.id
+            );
+
+            if (hasProject || hasShared) {
+              await Projects.findById({ _id: req.query.id }).exec(
+                async (error: Object, project: IProject) => {
+                  if (error || !project) {
+                    return res.status(500).json({
+                      msg: "Invalid request",
+                      error,
+                    });
+                  }
+
+                  return res.status(200).json(project);
+                }
+              );
+            } else {
+              return res
+                .status(401)
+                .json({ msg: "Do not have authority about project" });
+            }
+          }
+        );
+      } else {
+        return res.status(401).json({ msg: "Unauthorized" });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        msg: error.message,
+        error,
+      });
+    }
+  }
+};
+
+/***
  * get Project By Id
  * @METHOD `GET`
  * @PATH `/api/v1/project/v/:id`
@@ -118,7 +239,7 @@ export const getProjectById = async (
           .exec(async (error: Object, user: IUser) => {
             if (error || !user) {
               return res.status(500).json({
-                msg: "Can not find User",
+                msg: "User not found",
                 error,
               });
             }
@@ -185,7 +306,7 @@ export const getProjectList = async (
           .exec(async (error: Object, user: IUser) => {
             if (error || !user) {
               return res.status(500).json({
-                msg: "Can not find User",
+                msg: "User not found",
                 error,
               });
             }

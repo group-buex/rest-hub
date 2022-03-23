@@ -39,6 +39,7 @@ const ProjectSchema: Schema<IProject> = new Schema(
               seq: { type: Number, required: true },
               order: { type: Number, required: true },
               isRequired: { type: Boolean, required: true, default: false },
+              default: { type: Boolean, default: String, maxlength: 128 },
               name: { type: String, required: true, maxlength: 128 },
               type: { type: String, required: true, maxlength: 128 },
               description: { type: String, required: true, maxlength: 512 },

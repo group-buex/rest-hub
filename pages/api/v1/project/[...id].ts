@@ -1,3 +1,4 @@
+import { postProjectApi } from "./../../../../server/controller/project/index";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import connectDB from "../../../../server/middleware/mongodb";
@@ -32,6 +33,9 @@ const handler = async (
       if (req.method === "POST") {
         if (router === "new") {
           return await postProject(req, res);
+        }
+        if (router === "api") {
+          return await postProjectApi(req, res);
         }
       }
       return null;

@@ -4,6 +4,7 @@ import { IProject } from "interface/project";
 import Link from "next/link";
 import React, { FC } from "react";
 import { getProjectByIdSelector, projectState } from "states/project";
+import ApiGroup from "./Api/Group";
 
 interface DetailProps {
   id: string;
@@ -42,13 +43,18 @@ const Index: FC<DetailProps> = ({ id }) => {
   );
 
   return (
-    <Layout title={stateData?.title}>
+    <Layout title={stateData?.title} loading={state === "loading"}>
       {state !== "hasValue" ? (
         <span>Loading...</span>
       ) : (
-        stateData && <DetailHeader {...stateData} />
+        stateData && (
+          <>
+            <DetailHeader {...stateData} />
+            <ApiGroup />
+            <button>Add REST</button>
+          </>
+        )
       )}
-      {/* <ApiGroup /> */}
     </Layout>
   );
 };

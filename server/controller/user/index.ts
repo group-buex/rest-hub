@@ -30,7 +30,7 @@ export const checkAuth = async (
         async (err: Object, user: IUser) => {
           if (!user) {
             return res.status(500).json({
-              msg: "Can not find User",
+              msg: "User not found",
             });
           }
 
@@ -89,7 +89,7 @@ export const test = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         async (err: Object, user: IUser) => {
           if (!user) {
             return res.status(500).json({
-              msg: "Can not find user.",
+              msg: "User not found.",
             });
           }
           return res.status(200).json(true);
