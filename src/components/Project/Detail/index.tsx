@@ -1,10 +1,14 @@
+import Button from "components/Core/Controls/Button";
 import Layout from "components/Core/Layout";
+import { motion } from "framer-motion";
 import useGetRecoilValueLoadable from "hooks/useGetRecoilValueLoadable";
 import { IProject } from "interface/project";
 import Link from "next/link";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { getProjectByIdSelector, projectState } from "states/project";
 import ApiGroup from "./Api/Group";
+
+import IconClear from "/assets/clear.svg";
 
 interface DetailProps {
   id: string;
@@ -42,6 +46,23 @@ const Index: FC<DetailProps> = ({ id }) => {
     projectState
   );
 
+  const [tempRest, setTempRest] = useState({
+    status: "wait",
+    projectId: id,
+    title: "",
+    description: "",
+    list: [],
+    models: [],
+  });
+
+  const handleChangeTempRest = (name: string, value: string) => {
+    setTempRest({ ...tempRest, [name]: value });
+  };
+
+  const handleTempRestStatus = (status: "wait" | "ready") => {
+    setTempRest({ ...tempRest, status, title: "", description: "" });
+  };
+
   return (
     <Layout title={stateData?.title} loading={state === "loading"}>
       {state !== "hasValue" ? (
@@ -51,7 +72,84 @@ const Index: FC<DetailProps> = ({ id }) => {
           <>
             <DetailHeader {...stateData} />
             <ApiGroup />
-            <button>Add REST</button>
+
+            {tempRest.status === "wait" ? (
+              <button onClick={() => handleTempRestStatus("ready")}>
+                Add REST
+              </button>
+            ) : (
+              <motion.li
+                role="listitem"
+                className="flex items-center justify-between w-full border cursor-pointer shadow rounded-lg p-4 relative mb-2 pl-5 pr-5"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 20, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                // onClick={() => onClickGroup(item)}
+              >
+                <span className="flex md:flex-row flex-col gap-5 w-full">
+                  <div className="md:block flex md:mb-2 mr-4">
+                    <label
+                      className="block text-sm font-bold mb-2 w-[130px]"
+                      htmlFor="title"
+                    >
+                      Title
+                    </label>
+                    <input
+                      className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                      id="title"
+                      type="text"
+                      placeholder="title"
+                      onChange={(e) =>
+                        handleChangeTempRest("title", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="md:block flex md:mb-2  mr-4 md:w-[50vw]">
+                    <label
+                      className="block text-sm font-bold mb-2 w-[130px]"
+                      htmlFor="title"
+                    >
+                      Description
+                    </label>
+                    <input
+                      className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                      id="description"
+                      type="text"
+                      placeholder="description"
+                      onChange={(e) =>
+                        handleChangeTempRest("description", e.target.value)
+                      }
+                    />
+                  </div>
+
+                  <span className="flex flex-col">
+                    <Button className="md:mt-[26px] md:mr-0 mr-4">
+                      Submit
+                    </Button>
+                  </span>
+                </span>
+
+                <button
+                  className="self-start"
+                  aria-label="clear"
+                  onClick={() => handleTempRestStatus("wait")}
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
+                      fill="#e5e7eb"
+                    />
+                  </svg>
+                </button>
+              </motion.li>
+            )}
           </>
         )
       )}

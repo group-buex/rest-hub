@@ -25,6 +25,7 @@ const ProjectSchema: Schema<IProject> = new Schema(
       projectId: { type: String },
       title: { type: String, maxlength: 256 },
       description: { type: String, maxlength: 512 },
+      status: { type: String, maxlength: 128 },
       list: [
         {
           seq: { type: Number, required: true },

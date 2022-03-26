@@ -46,8 +46,8 @@ const Index: FC = () => {
       nodeSelector="li"
       handleSelector="a"
     >
-      {api}
-      <GorupItem api={api?.list} onClickGroup={handleClickGroup} />
+      {/* {api} */}
+      {/* <GorupItem api={api?.list} onClickGroup={handleClickGroup} /> */}
     </ReactDragListView>
   );
 };
