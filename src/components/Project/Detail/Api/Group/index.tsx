@@ -45,9 +45,10 @@ const Index: FC = () => {
       onDragEnd={handleDragEnd}
       nodeSelector="li"
       handleSelector="a"
+      className="w-full"
     >
-      {/* {api} */}
-      {/* <GorupItem api={api?.list} onClickGroup={handleClickGroup} /> */}
+      api 추가한사람도 넣기, api 수정 history 도 만들기
+      <GorupItem api={project.api} onClickGroup={handleClickGroup} />
     </ReactDragListView>
   );
 };

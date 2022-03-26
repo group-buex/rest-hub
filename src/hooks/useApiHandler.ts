@@ -9,7 +9,7 @@ type RequestState = {
 };
 
 // axios post
-export function useApiHandler(apiCall, useToast: boolean) {
+export function useApiHandler(apiCall, useToast: boolean, time: number = 500) {
   const [reqState, setReqState] = useState<RequestState>({
     error: null,
     data: null,
@@ -71,7 +71,7 @@ export function useApiHandler(apiCall, useToast: boolean) {
             toast.dismiss(toastId);
 
             handleSuccessHandler(json, resolve);
-          }, 500);
+          }, time);
 
           return () => clearTimeout(timeId);
         } else {

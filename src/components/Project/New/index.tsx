@@ -4,18 +4,10 @@ import { isEmpty } from "lib/helper";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import Layout from "components/Core/Layout";
-import IconClear from "/assets/clear.svg";
-import {
-  useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-  useSetRecoilState,
-} from "recoil";
+import { useRecoilState } from "recoil";
 import { userState } from "states/user";
 import IUser from "interface/user";
-import { Item } from "framer-motion/types/components/Reorder/Item";
 import RoleMenu from "./RoleMenu";
-import { projectState } from "states/project";
 
 interface NewProps {}
 
@@ -38,7 +30,7 @@ const Index: FC<NewProps> = ({}) => {
 
   const [newMember, setNewMember] = useState<{ email: string; role: string }>({
     email: "",
-    role: "",
+    role: "admin",
   });
   const [params, setParams] = useState<PramasProps>({
     title: "",
@@ -64,8 +56,17 @@ const Index: FC<NewProps> = ({}) => {
       });
   }, [user]);
 
-  const handleMemberChange = (e) => {
-    setNewMember({ ...newMember, [e.target.id]: e.target.value });
+  const handleMemberChange = ({ target: { id, value } }, email?: string) => {
+    if (id === "role" && email) {
+      setParams({
+        ...params,
+        member: params.member.filter((item: { email: ""; role: "" }) =>
+          item.email === email ? (item.role = value) : item
+        ),
+      });
+      return;
+    }
+    setNewMember({ ...newMember, [id]: value });
   };
 
   const handleInputChange = useCallback(
@@ -250,7 +251,9 @@ const Index: FC<NewProps> = ({}) => {
               {params.member.map((item: { email: string; role: string }) => (
                 <div key={item.email} className="flex flex-row gap-2 mt-2">
                   {item.email !== user.email && (
-                    <RoleMenu onChange={handleMemberChange} />
+                    <RoleMenu
+                      onChange={(e) => handleMemberChange(e, item.email)}
+                    />
                   )}
                   <p className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline">
                     {item.email}

@@ -13,10 +13,14 @@ interface ButtonProps
   className?: string;
   hoverScale?: number;
   tapScale?: number;
+  onClick?: (e: any) => void;
 }
 
 const Button: FC<ButtonProps> = forwardRef<ButtonProps, "button">(
-  ({ children, className, hoverScale = 1.05, tapScale = 0.9 }, ref) => {
+  (
+    { children, className, hoverScale = 1.05, tapScale = 0.9, onClick },
+    ref
+  ) => {
     return (
       <motion.button
         ref={ref}
@@ -26,6 +30,7 @@ const Button: FC<ButtonProps> = forwardRef<ButtonProps, "button">(
         )}
         whileHover={{ scale: hoverScale }}
         whileTap={{ scale: tapScale }}
+        onClick={onClick}
       >
         {children}
       </motion.button>

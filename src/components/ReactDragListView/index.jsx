@@ -1,3 +1,4 @@
+import { cx } from "components/Core/system/core";
 import React, { Component } from "react";
 import { closest, getDomIndex, getScrollElement } from "./util";
 
@@ -236,6 +237,7 @@ class ReactDragListView extends Component {
   render() {
     return (
       <div
+        className={cx("presentation", this.props.className)}
         role="presentation"
         onMouseDown={this.onMouseDown}
         ref={(c) => {

@@ -111,7 +111,7 @@ export const postProjectApi = async (
       const { userId, userEmail } = await getUserByToken(token);
 
       if (userId) {
-        await Projects.findById({ id: req.body.projectId }).exec(
+        await Projects.findById({ _id: req.body.projectId }).exec(
           async (error: Object, project: IProject) => {
             if (error || !project) {
               return res.status(500).json({
@@ -120,7 +120,7 @@ export const postProjectApi = async (
               });
             }
 
-            const member: IProjectMember = project.member.filter(
+            const member: IProjectMember = await project.member.filter(
               (item: IProjectMember) => item.email === userEmail
             )[0];
 
@@ -131,74 +131,67 @@ export const postProjectApi = async (
               });
             }
 
-            if (member.role === "guest") {
+            if (member?.role === "guest") {
               return res.status(401).json({
-                msg: "Not authorized about project",
+                msg: "Not authorized about project" + `."${member.role}""`,
                 error,
               });
             }
 
             await Projects.findOneAndUpdate(
-              { id: req.body.projectId },
+              { _id: project._id },
               {
                 $push: {
                   api: {
-                    seq: project.api.length + 1,
-                    order: project.api.length + 1,
-                    projectId: req.body.projectId,
+                    seq: project.api.length + 1 || 0,
+                    order: project.api.length + 1 || 0,
+                    projectId: project._id,
                     title: req.body.title,
                     description: req.body.description,
+                    stauts: "published",
                     list: [],
+                    models: [],
                   },
                 },
               },
               { new: true, runValidators: true }
-            ).exec((error: Object, project: IProject) => {
+            ).exec(async (error: Object, project: IProject) => {
               if (error || !project) {
                 return res.status(500).json({
                   msg: "Can not update project",
                   error,
                 });
               }
-              return res.status(200).json(project);
-            });
-          }
-        );
 
-        await Users.findById({ _id: userId }).exec(
-          async (error: Object, user: IUser) => {
-            if (error || !user) {
-              return res.status(500).json({
-                msg: "User not found",
-                error,
-              });
-            }
-
-            const hasProject = user.project?.some(
-              (project: IUserProject) => project.projectId === req.query.id
-            );
-            const hasShared = user.shared?.some(
-              (shared: IUserProject) => shared.projectId === req.query.id
-            );
-
-            if (hasProject || hasShared) {
-              await Projects.findById({ _id: req.query.id }).exec(
-                async (error: Object, project: IProject) => {
-                  if (error || !project) {
+              await Users.findById({ _id: userId }).exec(
+                async (error: Object, user: IUser) => {
+                  if (error || !user) {
                     return res.status(500).json({
-                      msg: "Invalid request",
+                      msg: "User not found",
                       error,
                     });
                   }
 
-                  return res.status(200).json(project);
+                  const hasProject = user.project?.some(
+                    (project: IUserProject) =>
+                      project.projectId === req.body.projectId
+                  );
+                  const hasShared = user.shared?.some(
+                    (shared: IUserProject) =>
+                      shared.projectId === req.body.projectId
+                  );
+
+                  return hasProject || hasShared
+                    ? res.status(200).json(project)
+                    : res
+                        .status(401)
+                        .json({
+                          msg: "Do not have authority about project",
+                          error,
+                        });
                 }
               );
-            } else {
-              return res
-                .status(401)
-                .json({ msg: "Do not have authority about project" });
-            }
+            });
           }
         );
       } else {

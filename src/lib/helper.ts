@@ -72,7 +72,7 @@ const isArray = (arr: any[]) => {
 export const isEmpty = (value: any) => {
   return (
     isNull(value) ||
-    (isString(value) && value.trim().length === 0) ||
+    (isString(value) && value.length === 0) ||
     (isPlainObject(value) && isEmptyObject(value)) ||
     (isArray(value) && value.length === 0)
   );

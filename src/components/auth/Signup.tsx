@@ -18,10 +18,10 @@ const Signup: FC = () => {
     password: string;
     confirmPassword: string;
   }>({
-    name: null,
-    email: null,
-    password: null,
-    confirmPassword: null,
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const handleInputChange = useCallback(
@@ -39,6 +39,9 @@ const Signup: FC = () => {
     e.preventDefault();
     if (loading) return null;
 
+    const regEmail =
+      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
     const { name, email, password, confirmPassword } = params;
     const [nameRef, emailRef, passwordRef, confirmPasswordRef] =
       inputRef.current;
@@ -47,9 +50,6 @@ const Signup: FC = () => {
       nameRef.focus();
       return toast.error("Name is required");
     }
-
-    const regEmail =
-      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
     if (isEmpty(email?.trim())) {
       emailRef.focus();
@@ -63,7 +63,7 @@ const Signup: FC = () => {
       passwordRef.focus();
       return toast.error("Password is required");
     } else if (
-      !(password.length >= 6 && password.length <= 20) ||
+      !(password?.length >= 6 && password?.length <= 20) ||
       !/[a-z]/.test(password) ||
       !/[0-9]/.test(password)
     ) {

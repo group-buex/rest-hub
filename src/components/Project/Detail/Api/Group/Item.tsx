@@ -34,7 +34,7 @@ const ApiGroupItem: FC<ApiGroupItemProps> = ({ api, onClickGroup }) => {
   // };
 
   return (
-    <ol>
+    <ol className="w-full">
       {api?.map((item: IApi, index: number) => (
         <React.Fragment key={item._id}>
           <motion.li

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { FC } from "react";
 
 interface RoleMenuProps {
   onChange: (e) => void;
 }
 
-const RoleMenu = ({ onChange }) => {
+const RoleMenu: FC<RoleMenuProps> = ({ onChange }) => {
   return (
     <select
       id="role"

@@ -1,14 +1,15 @@
+import { usePostProjectApi } from "actions/project";
 import Button from "components/Core/Controls/Button";
 import Layout from "components/Core/Layout";
 import { motion } from "framer-motion";
 import useGetRecoilValueLoadable from "hooks/useGetRecoilValueLoadable";
 import { IProject } from "interface/project";
+import { isEmpty } from "lib/helper";
 import Link from "next/link";
 import React, { FC, useState } from "react";
+import toast from "react-hot-toast";
 import { getProjectByIdSelector, projectState } from "states/project";
 import ApiGroup from "./Api/Group";
-
-import IconClear from "/assets/clear.svg";
 
 interface DetailProps {
   id: string;
@@ -41,9 +42,14 @@ const DetailHeader: FC<IProject> = ({
 };
 
 const Index: FC<DetailProps> = ({ id }) => {
-  const { state, stateData } = useGetRecoilValueLoadable(
+  const { state, stateData, setStateData } = useGetRecoilValueLoadable(
     getProjectByIdSelector(id),
     projectState
+  );
+
+  const [postProjectApi, { loading, error, data }]: any = usePostProjectApi(
+    true,
+    200
   );
 
   const [tempRest, setTempRest] = useState({
@@ -51,8 +57,6 @@ const Index: FC<DetailProps> = ({ id }) => {
     projectId: id,
     title: "",
     description: "",
-    list: [],
-    models: [],
   });
 
   const handleChangeTempRest = (name: string, value: string) => {
@@ -61,6 +65,29 @@ const Index: FC<DetailProps> = ({ id }) => {
 
   const handleTempRestStatus = (status: "wait" | "ready") => {
     setTempRest({ ...tempRest, status, title: "", description: "" });
+  };
+
+  const handleSubmitCreateApi = async (e) => {
+    e.preventDefault();
+
+    if (isEmpty(tempRest.title)) {
+      return toast.error("Enter a title");
+    }
+    if (isEmpty(tempRest.description)) {
+      return toast.error("Enter a description");
+    }
+    const { status, data } = await postProjectApi(tempRest);
+
+    if (data) {
+      toast.success("Success");
+      setStateData(data);
+      setTempRest({
+        status: "wait",
+        projectId: id,
+        title: "",
+        description: "",
+      });
+    }
   };
 
   return (
@@ -124,7 +151,10 @@ const Index: FC<DetailProps> = ({ id }) => {
                   </div>
 
                   <span className="flex flex-col">
-                    <Button className="md:mt-[26px] md:mr-0 mr-4">
+                    <Button
+                      className="md:mt-[26px] md:mr-0 mr-4"
+                      onClick={handleSubmitCreateApi}
+                    >
                       Submit
                     </Button>
                   </span>
