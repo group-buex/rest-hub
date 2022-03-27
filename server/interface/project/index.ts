@@ -24,7 +24,7 @@ export interface IProjectApi {
   projectId: string;
   title: string;
   description: string;
-  status: string;
+  status: "wait" | "ready" | "published";
   list: {
     seq: number;
     order: number;
@@ -33,11 +33,12 @@ export interface IProjectApi {
     description: string;
     notice: string;
     mockData: object;
+    status: "wait" | "ready" | "published";
     request: {
       seq: number;
       order: number;
       isRequired: boolean;
-      default: string;
+      defaultValue: string;
       name: string;
       type: string;
       description: string;

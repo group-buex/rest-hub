@@ -13,19 +13,28 @@ interface ButtonProps
   className?: string;
   hoverScale?: number;
   tapScale?: number;
+  transparent?: boolean;
   onClick?: (e: any) => void;
 }
 
 const Button: FC<ButtonProps> = forwardRef<ButtonProps, "button">(
   (
-    { children, className, hoverScale = 1.05, tapScale = 0.9, onClick },
+    {
+      children,
+      className,
+      hoverScale = 1.05,
+      tapScale = 0.9,
+      transparent = false,
+      onClick,
+    },
     ref
   ) => {
     return (
       <motion.button
         ref={ref}
         className={cx(
-          "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
+          !transparent &&
+            "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 h-[38px] rounded focus:outline-none focus:shadow-outline",
           className
         )}
         whileHover={{ scale: hoverScale }}

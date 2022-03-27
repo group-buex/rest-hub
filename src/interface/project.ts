@@ -7,7 +7,7 @@ export interface IProject {
   baseUrl: string;
   webUrl: string;
   member?: IProjectMember[];
-  api?: IProjectApi;
+  api?: IProjectApi[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -25,6 +25,7 @@ export interface IProjectApi {
   projectId: string;
   title: string;
   description: string;
+  status: "wait" | "ready" | "published";
   list: {
     _id: string;
     seq: number;
@@ -34,28 +35,32 @@ export interface IProjectApi {
     description: string;
     notice: string;
     mockData: object;
-    request: {
-      seq: number;
-      order: number;
-      isRequired: boolean;
-      name: string;
-      type: string;
-      description: string;
-    }[];
-    response: {
-      _id: string;
-      seq: number;
-      order: number;
-      code: number;
-      message: string;
-      data: object;
-    }[];
+    request: IProjectApiRequest[];
+    response: IProjectApiResponse[];
   }[];
-  models: {
-    _id: string;
-    seq: number;
-    order: number;
-    name: string;
-    model: object;
-  }[];
+  models: IProjectApiModels[];
+}
+
+export interface IProjectApiRequest {
+  seq: number;
+  order: number;
+  isRequired: boolean;
+  name: string;
+  type: string;
+  defaultValue: string;
+  description: string;
+}
+export interface IProjectApiResponse {
+  seq: number;
+  order: number;
+  code: number;
+  message: string;
+  data: object;
+}
+
+export interface IProjectApiModels {
+  seq: number;
+  order: number;
+  name: string;
+  model: object;
 }

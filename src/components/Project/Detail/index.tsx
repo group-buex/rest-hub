@@ -52,7 +52,12 @@ const Index: FC<DetailProps> = ({ id }) => {
     200
   );
 
-  const [tempRest, setTempRest] = useState({
+  const [tempRest, setTempRest] = useState<{
+    status: string;
+    projectId: string;
+    title: string;
+    description: string;
+  }>({
     status: "wait",
     projectId: id,
     title: "",

@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { motion } from "framer-motion";
 
 import GroupList from "../GroupList";
@@ -10,6 +10,8 @@ import clsx from "clsx";
 import { useRecoilState } from "recoil";
 import { selectedApiGroupState } from "states/project";
 import ReactDragListView from "components/ReactDragListView";
+import NewApiForm from "./NewApiForm";
+import { TempApiItemType } from "typings/project";
 
 interface ApiGroupItemProps {
   api: IApi[];
@@ -67,6 +69,7 @@ const ApiGroupItem: FC<ApiGroupItemProps> = ({ api, onClickGroup }) => {
               </button>
             </span>
           </motion.li>
+
           {groupList.includes(item._id) && (
             <ReactDragListView
               // onDragEnd={handleDragEnd}
@@ -76,6 +79,12 @@ const ApiGroupItem: FC<ApiGroupItemProps> = ({ api, onClickGroup }) => {
               <GroupList item={item} />
             </ReactDragListView>
           )}
+
+          {/* {tempRest.status === "wait" ? (
+              <button onClick={() => handleTempRestStatus("ready")}>
+                Add REST
+              </button>
+            ) */}
         </React.Fragment>
       ))}
     </ol>

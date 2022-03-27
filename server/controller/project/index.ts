@@ -148,7 +148,7 @@ export const postProjectApi = async (
                     projectId: project._id,
                     title: req.body.title,
                     description: req.body.description,
-                    stauts: "published",
+                    status: "published",
                     list: [],
                     models: [],
                   },
@@ -183,12 +183,10 @@ export const postProjectApi = async (
 
                   return hasProject || hasShared
                     ? res.status(200).json(project)
-                    : res
-                        .status(401)
-                        .json({
-                          msg: "Do not have authority about project",
-                          error,
-                        });
+                    : res.status(401).json({
+                        msg: "Do not have authority about project",
+                        error,
+                      });
                 }
               );
             });
