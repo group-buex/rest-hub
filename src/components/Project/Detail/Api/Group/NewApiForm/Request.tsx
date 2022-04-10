@@ -137,59 +137,23 @@ const Request: FC<RequestProps> = ({ border }) => {
     });
   };
 
-  const handleClickRemoveApi = (index: string) => {
-    const newApi: any = [];
-    // const removedApi = Object.keys(tempApiRequest).filter((i: string) => {
-    //   console.log(tempApiRequest[i]);
-    //   if (index !== i) return tempApiRequest[i];
-    // });
+  const handleClickRemoveApi = async (index: string) => {
+    const tempApi: any = [];
 
-    // console.log(tempApiRequest);
+    await Object.keys(tempApiRequest).filter((i: string) => {
+      index !== i && console.log(tempApiRequest[i]);
+      if (index !== i) return tempApi.push(tempApiRequest[i]);
+    });
 
-    // console.log(removedApi);
+    const overrideApi = await tempApi?.map((item, i: number) => {
+      if (item.seq > i) {
+        return { ...item, seq: Number(i), order: Number(i) };
+      } else {
+        return item;
+      }
+    });
 
-    // Object.keys(tempApiRequest).map((i: string) => {
-    //   const {isRequired, name, type, defaultValue, description} = tempApiRequest[i];
-    //   if (Number(i) > Number(index)) {
-    //     newApi.push({
-    //       seq: Number(i),
-    //       order: Number(i),
-    //       isRequired,
-    //       name,
-    //       type,
-    //       defaultValue,
-    //       description,
-    //     });
-    //   }
-    // });
-
-    // Object.keys(removedApi).map((i) => {
-    //   if (Number(i) > Number(index)) {
-    //     newApi.push({
-    //       seq: Number(i),
-    //       order: Number(i),
-    //       isRequired: removedApi[i].isRequired,
-    //       name: "",
-    //       type: "string",
-    //       defaultValue: "",
-    //       description: "",
-    //     });
-    //   } else {
-    //   }
-    // });
-
-    // const newApi = Object.keys(removedApi).map((i: string) => {
-    //   if (Number(i) > Number(index)) {
-    //     // removedApi[i].seq = Number(removedApi[i].seq) - 1;
-    //     // removedApi[i].order = Number(removedApi[i].order) - 1;
-    //     return removedApi[i];
-    //   } else {
-    //     return removedApi[i];
-    //   }
-    // });
-
-    // console.log(newApi);
-    // setTempApiRequest
+    setTempApiRequest(overrideApi);
   };
 
   return (

@@ -39,11 +39,11 @@ const Login: FC = () => {
     const [emailRef, passwordRef] = inputRef.current;
 
     // TODO: email validation
-    if (isEmpty(email.trim())) {
+    if (isEmpty(email?.trim())) {
       emailRef.focus();
       return toast.error("Email is required");
     }
-    if (isEmpty(password.trim())) {
+    if (isEmpty(password?.trim())) {
       passwordRef.focus();
       return toast.error("Password is required");
     }
